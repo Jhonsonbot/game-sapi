@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Peternakan Sapi</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>🐄 Peternakan Sapi</h1>
+
+  <div class="status-panel">
+    <p>🐄 Total Sapi: <span id="cowCount">1</span></p>
+    <p>🥛 Susu: <span id="milkCount">0</span></p>
+    <p>💰 Poin: <span id="points">0</span></p>
+  </div>
+
+  <div class="action-panel">
+    <button onclick="collectMilk()">✅ Ambil Susu</button>
+    <button onclick="sellMilk()">🛒 Jual Susu</button>
+    <button onclick="buyCow()">➕ Beli Sapi (100 poin)</button>
+    <button onclick="buyBarn()">🏠 Beli Kandang (200000 poin)</button>
+  </div>
+
+  <div id="barnContainer" class="barn-container">
+    <!-- Kandang dan sapi akan dirender dari JS -->
+  </div>
+
+  <script type="module" src="game.js"></script>
+</body>
+</html>
