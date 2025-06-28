@@ -23,6 +23,15 @@ button:hover {
   background-color: #218838;
 }
 
+.decorations {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 10px;
+  margin-bottom: 20px;
+  justify-items: center;
+  align-items: center;
+}
+
 .barn-container {
   display: flex;
   flex-wrap: wrap;
