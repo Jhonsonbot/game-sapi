@@ -31,7 +31,7 @@ button:hover {
 }
 
 .barn {
-  background-image: url('https://images.unsplash.com/photo-1582468840937-c1dfbfc92d46?auto=format&fit=crop&w=300&q=80');
+  background-image: url('./assets/fence.png');
   background-size: cover;
   background-position: center;
   padding: 10px;
@@ -42,6 +42,7 @@ button:hover {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
+  position: relative;
 }
 
 .cow {
@@ -62,4 +63,33 @@ button:hover {
   justify-content: center;
   font-size: 24px;
   color: #888;
+}
+
+.decor {
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+  margin: 10px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.decor.cart {
+  background-image: url('./assets/cart.png');
+}
+.decor.chimney {
+  background-image: url('./assets/chimney.png');
+}
+.decor.hedge {
+  background-image: url('./assets/hedge.png');
+}
+.decor.fountain {
+  background-image: url('./assets/fountainCenter.png');
+}
+.decor.banner-red {
+  background-image: url('./assets/bannerRed.png');
+}
+.decor.banner-green {
+  background-image: url('./assets/bannerGreen.png');
 }
