@@ -92,21 +92,21 @@ function renderGrid() {
     tile.className = `tile ${type}`;
 
     if (type === "cow") {
-      const level = userData.cows[cowIdx] || 1;
+      // Ambil level dari userData.cows berdasarkan cowIdx
+      const level = Number.isInteger(userData.cows[cowIdx]) ? userData.cows[cowIdx] : 1;
+
       tile.style.backgroundImage = level > 1
         ? "url('./assets/cow-upgrade.gif')"
         : "url('./assets/cow-real.jpeg')";
 
       const label = document.createElement("div");
       label.textContent = `Lv${level}`;
-      label.style.cssText = `
-        font-size: 12px;
-        background: #fff9;
-        border-radius: 6px;
-        padding: 1px 4px;
-        margin-top: 60px;
-        display: inline-block;
-      `;
+      label.style.fontSize = "12px";
+      label.style.background = "#fff9";
+      label.style.borderRadius = "6px";
+      label.style.padding = "1px 4px";
+      label.style.marginTop = "60px";
+      label.style.display = "inline-block";
 
       const upBtn = document.createElement("button");
       upBtn.textContent = "🔼";
