@@ -141,22 +141,39 @@ button:hover {
   pointer-events: none;
   z-index: 10;
 }
+.grid-wrapper {
+  position: relative;
+  display: inline-block; /* supaya lebar gridMap diikuti */
+  margin: auto;
+}
+
+.grid-map {
+  display: grid;
+  gap: 2px;
+}
+
+.tile {
+  width: 80px;
+  height: 80px;
+  background-color: #eee;
+  background-size: cover;
+  background-position: center;
+  border: 1px solid #ccc;
+  position: relative;
+}
+
+/* Penutup kandang */
 #kandangPenutup {
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 10;
+  width: 100%;    /* menutupi seluruh grid */
+  height: 100%;
   background-image: url('./assets/kandang.jpg');
   background-size: cover;
-  background-repeat: no-repeat;
   background-position: center;
-  display: none;
+  background-repeat: no-repeat;
+  z-index: 10;
   cursor: pointer;
-}
-
-
-.grid-container {
-  position: relative;
-  width: fit-content;
-  margin: auto;
+  display: none;
 }
