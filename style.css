@@ -178,3 +178,27 @@ button:hover {
   cursor: pointer;
   display: none;
 }
+
+.decor.game-button {
+  width: 120px;
+  height: 40px;
+  background-color: #7a5c30;
+  color: white;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #fff;
+  border-radius: 10px;
+  cursor: pointer;
+  position: absolute;
+  top: 10px;  /* sesuaikan posisi */
+  right: 10px; /* sesuaikan posisi */
+  box-shadow: 2px 2px 5px #0004;
+  transition: transform 0.2s;
+}
+
+.decor.game-button:hover {
+  transform: scale(1.05);
+  background-color: #926f3a;
+}
