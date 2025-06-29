@@ -53,7 +53,7 @@ button:hover {
   background-image: url('./assets/fence.png');
 }
 .tile.cow {
-  background-image: url('https://i.ibb.co/1LkFMcS/cow-icon.png');
+  background-image: url('./assets/cow-real.jpeg');
 }
 .tile.empty {
   background-color: #eaeaea;
@@ -64,7 +64,7 @@ button:hover {
 }
 
 .cow {
-  background-image: url('https://i.ibb.co/1LkFMcS/cow-icon.png');
+  background-image: url('./assets/cow-real.jpeg');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -110,9 +110,6 @@ button:hover {
 }
 .decor.banner-green {
   background-image: url('./assets/bannerGreen.png');
-}
-.tile.cow {
-  background-image: url('./assets/cow-real.png');
 }
 
 .milk-icon {
