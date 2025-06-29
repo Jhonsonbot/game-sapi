@@ -1,3 +1,4 @@
+/* Body dan container */
 body {
   font-family: Arial, sans-serif;
   text-align: center;
@@ -14,22 +15,23 @@ body {
   box-shadow: 0 0 12px rgba(0,0,0,0.2);
 }
 
+/* Canvas responsif */
 canvas {
   background-color: #fff;
+  border: 2px solid #888;
+  max-width: 100%;
+  height: auto;
   display: block;
   margin: 0 auto 10px;
-  border: 2px solid #888;
-  width: 600px;
-  height: 600px;
 }
 
-#controls button {
-  padding: 10px;
-  margin: 4px;
-  font-size: 20px;
+/* Panel skor */
+#scorePanel {
+  font-size: 18px;
+  margin-bottom: 10px;
 }
 
-
+/* Tombol utama */
 button {
   padding: 10px 16px;
   margin: 5px;
@@ -44,10 +46,7 @@ button:hover {
   background-color: #218838;
 }
 
-#scorePanel {
-  font-size: 18px;
-  margin-bottom: 10px;
-}
+/* Tombol kontrol arah */
 #controls {
   text-align: center;
   margin-top: 10px;
