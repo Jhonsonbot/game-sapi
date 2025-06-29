@@ -304,7 +304,7 @@ function autoTutupKandang() {
   if (!kandang) return;
   
   setInterval(() => {
-    if (Date.now() - lastActivity > 30000) { // 30 detik
+    if (Date.now() - lastActivity > 50000) { // 50 detik
       kandang.style.display = "block";
     }
   }, 5000);
