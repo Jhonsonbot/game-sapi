@@ -30,7 +30,7 @@ const provider = new GoogleAuthProvider();
 const db = getFirestore(app);
 
 let userData = {
-  cows: 1,
+  cows: [], // now array of levels
   milk: 0,
   points: 0,
   map: Array(25).fill("empty") // 5x5 tile grid
@@ -41,7 +41,6 @@ const milkCountEl = document.getElementById("milkCount");
 const pointsEl = document.getElementById("points");
 const gridMap = document.getElementById("gridMap");
 
-// Optional: tombol login manual
 const loginButton = document.createElement("button");
 loginButton.textContent = "🔐 Login Google";
 loginButton.style.marginTop = "20px";
@@ -56,7 +55,8 @@ onAuthStateChanged(auth, async (user) => {
     if (snap.exists()) {
       userData = snap.data();
     } else {
-      userData.map[0] = "cow"; // Bonus sapi pertama
+      userData.map[0] = "cow";
+      userData.cows.push(1); // level 1 sapi pertama
       await setDoc(ref, userData);
     }
     renderUI();
@@ -66,7 +66,7 @@ onAuthStateChanged(auth, async (user) => {
 });
 
 function renderUI() {
-  cowCountEl.textContent = userData.cows;
+  cowCountEl.textContent = userData.cows.length;
   milkCountEl.textContent = userData.milk;
   pointsEl.textContent = userData.points;
   renderGrid();
@@ -77,7 +77,30 @@ function renderGrid() {
   userData.map.forEach((type, i) => {
     const tile = document.createElement("div");
     tile.className = `tile ${type}`;
-    tile.addEventListener("click", () => handleTileClick(i));
+
+    if (type === "cow") {
+      const cowIndex = userData.map.slice(0, i + 1).filter(t => t === "cow").length - 1;
+      const level = userData.cows[cowIndex] || 1;
+      const label = document.createElement("div");
+      label.textContent = `Lv${level}`;
+      label.style.fontSize = "12px";
+      label.style.background = "#fff9";
+      label.style.borderRadius = "6px";
+      label.style.padding = "1px 4px";
+      label.style.marginTop = "60px";
+      label.style.display = "inline-block";
+
+      const upBtn = document.createElement("button");
+      upBtn.textContent = "🔼";
+      upBtn.style.fontSize = "10px";
+      upBtn.onclick = () => upgradeCow(cowIndex);
+
+      tile.appendChild(label);
+      tile.appendChild(upBtn);
+    } else {
+      tile.addEventListener("click", () => handleTileClick(i));
+    }
+
     gridMap.appendChild(tile);
   });
 }
@@ -87,7 +110,7 @@ function handleTileClick(index) {
     if (userData.points >= 100) {
       userData.points -= 100;
       userData.map[index] = "cow";
-      userData.cows++;
+      userData.cows.push(1); // sapi level 1 baru
       update();
     } else {
       alert("💰 Poin tidak cukup untuk menaruh sapi!");
@@ -95,9 +118,19 @@ function handleTileClick(index) {
   }
 }
 
+function upgradeCow(index) {
+  if (userData.points >= 200) {
+    userData.points -= 200;
+    userData.cows[index] += 1;
+    update();
+  } else {
+    alert("🔼 Poin tidak cukup untuk upgrade sapi!");
+  }
+}
+
 function collectMilk() {
-  const milkGain = userData.cows;
-  userData.milk += milkGain;
+  const total = userData.cows.reduce((sum, lv) => sum + lv, 0);
+  userData.milk += total;
   update();
 }
 
