@@ -391,8 +391,22 @@ function showReferralLink() {
   if (refText) {
     refText.innerHTML = `
       Link kamu: <a href="${refLink}" target="_blank">${refLink}</a>
-      <button onclick="navigator.clipboard.writeText('${refLink}')">📋 Salin</button>
+      <button id="copyRefBtn">📋 Salin</button>
     `;
+
+    // Tambahkan event listener setelah HTML ditulis
+    const copyBtn = document.getElementById("copyRefBtn");
+    if (copyBtn) {
+      copyBtn.addEventListener("click", () => {
+        navigator.clipboard.writeText(refLink).then(() => {
+          copyBtn.textContent = "✅ Tersalin!";
+          setTimeout(() => copyBtn.textContent = "📋 Salin", 1500);
+        }).catch(err => {
+          alert("Gagal menyalin: " + err.message);
+        });
+      });
+    }
   }
 }
+
 
