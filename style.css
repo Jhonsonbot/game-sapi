@@ -27,7 +27,6 @@ button:hover {
 /* Grid map */
 .grid-map {
   display: grid;
-  grid-template-columns: repeat(5, 80px);
   gap: 4px;
   justify-content: center;
   margin: 20px auto;
