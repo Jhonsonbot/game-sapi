@@ -322,6 +322,7 @@ window.collectMilk = collectMilk;
 window.sellMilk = sellMilk;
 window.buyCow = buyCow;
 window.buyBarn = buyBarn;
+window.showReferralLink = showReferralLink;
 
 function animateMilkAtTile(tile) {
   const milk = document.createElement("div");
