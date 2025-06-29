@@ -130,7 +130,7 @@ function handleTileClick(index) {
     if (userData.points >= 100) {
       userData.points -= 100;
       userData.map[index] = "cow";
-      userData.cows.push(1);
+      userData.cows.push(1); // hanya tambahkan sapi baru di sini
       update();
     } else {
       alert("💰 Poin tidak cukup untuk menaruh sapi!");
@@ -138,27 +138,28 @@ function handleTileClick(index) {
   }
 }
 
-function upgradeCow(index) {
-  const currentLevel = userData.cows[index];
+
+function upgradeCow(cowIndex) {
+  const currentLevel = userData.cows[cowIndex];
 
   if (!Number.isInteger(currentLevel)) {
-    userData.cows[index] = 1;
+    userData.cows[cowIndex] = 1;
   }
 
-  // Maksimal level sapi: 5
-  if (currentLevel >= 5) {
+  if (userData.cows[cowIndex] >= 5) {
     alert("🔝 Sapi sudah di level maksimal!");
     return;
   }
 
   if (userData.points >= 200) {
     userData.points -= 200;
-    userData.cows[index] += 1;
-    update(); // renderUI akan dipanggil di sini
+    userData.cows[cowIndex] += 1;
+    update(); // hanya update, tidak ubah struktur cows atau map
   } else {
     alert("🔼 Poin tidak cukup untuk upgrade sapi!");
   }
 }
+
 
 
 
