@@ -224,8 +224,14 @@ function sellMilk() {
   const earn = Math.floor(userData.milk * 0.1);
   userData.points += earn;
   userData.milk = 0;
+
+  // Putar suara coin dari folder assets
+  const audio = new Audio("./assets/coin.mp3");
+  audio.play();
+
   update();
 }
+
 
 function buyCow() {
   alert("Klik petak kosong untuk menaruh sapi (biaya 100000 poin).");
