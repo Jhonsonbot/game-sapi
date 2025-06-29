@@ -1,40 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Peternakan Sapi</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    #kandangPenutup {
+      position: absolute;
+      top: 140px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 99;
+      width: 300px;
+      height: 220px;
+      background-image: url('./assets/kandang.png');
+      background-size: cover;
+      background-position: center;
+      cursor: pointer;
+      transition: opacity 0.4s ease;
+    }
+  </style>
 </head>
 <body>
   <h1>🐄 Peternakan Sapi</h1>
 
-  <div class="status-panel">
-    <p>🐄 Total Sapi: <span id="cowCount">1</span></p>
-    <p>🥛 Susu: <span class="milk-icon"></span> <span id="milkCount">0</span></p>
-    <p>💰 Poin: <span id="points">0</span></p>
+  <!-- Area Game yang hanya muncul setelah login -->
+  <div id="gameArea" style="display: none;">
+    <div class="status-panel">
+      <p>🐄 Total Sapi: <span id="cowCount">1</span></p>
+      <p>🥛 Susu: <span class="milk-icon"></span> <span id="milkCount">0</span></p>
+      <p>💰 Poin: <span id="points">0</span></p>
+    </div>
+
+    <div class="action-panel">
+      <button onclick="sellMilk()">🛒 Jual Susu</button>
+      <button onclick="buyBarn()">🏠 Beli Kandang (200k poin)</button>
+    </div>
+
+    <!-- Dekorasi -->
+    <div class="decorations">
+      <div class="decor banner-red"></div>
+      <div class="decor banner-green"></div>
+      <div class="decor hedge"></div>
+      <div class="decor fountain"></div>
+      <div class="decor chimney"></div>
+      <div class="decor cart"></div>
+    </div>
+
+    <!-- Kandang dan Game Map -->
+    <div id="kandangPenutup" onclick="bukaPetak()"></div>
+    <div class="grid-map" id="gridMap"></div>
   </div>
 
-  <div class="action-panel">
-  <button onclick="signInWithGoogle()">🔐 Login Google</button>
-  <button onclick="sellMilk()">🛒 Jual Susu</button>
-  <!--<button onclick="buyCow()">➕ Beli Sapi (100 poin)</button>-->
-  <button onclick="buyBarn()">🏠 Beli Kandang (200k poin)</button>
-</div>
-
-
-  <!-- Dekorasi Lingkungan -->
-  <div class="decorations">
-    <div class="decor banner-red"></div>
-    <div class="decor banner-green"></div>
-    <div class="decor hedge"></div>
-    <div class="decor fountain"></div>
-    <div class="decor chimney"></div>
-    <div class="decor cart"></div>
-  </div>
-
-  <div class="grid-map" id="gridMap">
-    <!-- Tile akan diisi oleh JS -->
+  <!-- Tombol login tetap di luar -->
+  <div id="loginSection">
+    <button onclick="signInWithGoogle()">🔐 Login Google</button>
   </div>
 
   <script type="module" src="game.js"></script>
