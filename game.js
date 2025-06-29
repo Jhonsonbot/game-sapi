@@ -211,13 +211,16 @@ function collectMilk() {
 }
 
 function sellMilk() {
+  if (userData.milk < 100) {
+    alert("❌ Minimal jual susu adalah 100!");
+    return;
+  }
+
   const earn = Math.floor(userData.milk * 0.1);
   userData.points += earn;
   userData.milk = 0;
   update();
-  audioKoin.play(); // 🔊 Suara koin
 }
-
 
 function buyCow() {
   alert("Klik petak kosong untuk menaruh sapi (biaya 100000 poin).");
