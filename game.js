@@ -41,20 +41,27 @@ const milkCountEl = document.getElementById("milkCount");
 const pointsEl = document.getElementById("points");
 const gridMap = document.getElementById("gridMap");
 
+// Optional: tombol login manual
+const loginButton = document.createElement("button");
+loginButton.textContent = "🔐 Login Google";
+loginButton.style.marginTop = "20px";
+loginButton.onclick = () => signInWithPopup(auth, provider);
+document.body.appendChild(loginButton);
+
 onAuthStateChanged(auth, async (user) => {
   if (user) {
+    loginButton.style.display = "none";
     const ref = doc(db, "users", user.uid);
     const snap = await getDoc(ref);
     if (snap.exists()) {
-  userData = snap.data();
-} else {
-  userData.map[0] = "cow"; // letakkan sapi pertama di tile 0
-  await setDoc(ref, userData);
-}
-
+      userData = snap.data();
+    } else {
+      userData.map[0] = "cow"; // Bonus sapi pertama
+      await setDoc(ref, userData);
+    }
     renderUI();
   } else {
-    signInWithPopup(auth, provider);
+    loginButton.style.display = "block";
   }
 });
 
