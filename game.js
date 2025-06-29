@@ -53,9 +53,16 @@ onAuthStateChanged(auth, async (user) => {
     const ref = doc(db, "users", user.uid);
     const snap = await getDoc(ref);
     if (snap.exists()) {
-      userData = snap.data();
-      if (!Array.isArray(userData.cows)) userData.cows = [];
-      if (!Array.isArray(userData.map)) userData.map = Array(25).fill("empty");
+      const data = snap.data();
+      userData.cows = Array.isArray(data.cows) ? data.cows : [1];
+      userData.map = Array.isArray(data.map) ? data.map : Array(25).fill("empty");
+      userData.milk = typeof data.milk === "number" ? data.milk : 0;
+      userData.points = typeof data.points === "number" ? data.points : 0;
+
+      // Recovery if map has no cow but cows exist
+      if (!userData.map.includes("cow") && userData.cows.length > 0) {
+        userData.map[0] = "cow";
+      }
     } else {
       userData.map[0] = "cow";
       userData.cows = [1];
@@ -88,7 +95,7 @@ function renderGrid() {
       const level = userData.cows[cowIdx] || 1;
       tile.style.backgroundImage = level > 1
         ? "url('./assets/cow-upgrade.gif')"
-        : "url('./assets/cow-real.png')";
+        : "url('./assets/cow-real.jpeg')";
 
       const label = document.createElement("div");
       label.textContent = `Lv${level}`;
@@ -163,7 +170,12 @@ async function update() {
   const user = auth.currentUser;
   if (!user) return;
   const ref = doc(db, "users", user.uid);
-  await setDoc(ref, userData);
+  await setDoc(ref, {
+    cows: userData.cows,
+    map: userData.map,
+    milk: userData.milk,
+    points: userData.points
+  });
   renderUI();
 }
 
