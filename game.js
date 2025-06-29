@@ -40,6 +40,8 @@ const pointsEl = document.getElementById("points");
 const gridMap = document.getElementById("gridMap");
 const audioSapi = new Audio("./assets/cow.mp3");
 const audioKoin = new Audio("./assets/coin.mp3");
+const audioBGM = new Audio("./assets/farm.mp3");
+audioBGM.loop = true;  // agar diputar terus-menerus
 
 function signInWithGoogle() {
   signInWithPopup(auth, provider).catch((error) => {
@@ -80,6 +82,7 @@ onAuthStateChanged(auth, async (user) => {
     renderUI();
     startAutoMilk();
     autoTutupKandang(); // aktifkan fungsi auto tutup kandang
+   audioBGM.play().catch(e => console.warn("Audio auto-play diblokir:", e)); 
   } else {
     if (loginBtn) loginBtn.style.display = "inline-block";
   }
@@ -322,3 +325,16 @@ document.addEventListener("click", () => {
 
 // panggil setelah login berhasil
 autoTutupKandang();
+const btnMute = document.getElementById("btnMute");
+let isMuted = false;
+
+btnMute.onclick = () => {
+  if (isMuted) {
+    audioBGM.play();
+    btnMute.textContent = "🔇 Mute";
+  } else {
+    audioBGM.pause();
+    btnMute.textContent = "🔊 Unmute";
+  }
+  isMuted = !isMuted;
+};
