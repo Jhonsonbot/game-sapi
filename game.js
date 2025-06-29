@@ -362,9 +362,12 @@ function autoTutupKandang() {
   }, 5000);
 }
 
-document.addEventListener("click", () => {
-  lastActivity = Date.now();
+["click", "keydown", "mousemove", "touchstart"].forEach(event => {
+  document.addEventListener(event, () => {
+    lastActivity = Date.now();
+  });
 });
+
 
 // panggil setelah login berhasil
 
