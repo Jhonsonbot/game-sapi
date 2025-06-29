@@ -59,6 +59,8 @@ onAuthStateChanged(auth, async (user) => {
     if (loginBtn) loginBtn.style.display = "none";
     const gameArea = document.getElementById("gameArea");
     if (gameArea) gameArea.style.display = "block";
+    const referralSection = document.getElementById("referralSection");
+    if (referralSection) referralSection.style.display = "block";
 
     const ref = doc(db, "users", user.uid);
     const snap = await getDoc(ref);
@@ -386,6 +388,10 @@ function showReferralLink() {
   const refLink = `${window.location.origin}?ref=${user.uid}`;
   const refText = document.getElementById("refLinkText");
   if (refText) {
-    refText.textContent = "Link kamu: " + refLink;
+    refText.innerHTML = `
+      Link kamu: <a href="${refLink}" target="_blank">${refLink}</a>
+      <button onclick="navigator.clipboard.writeText('${refLink}')">📋 Salin</button>
+    `;
   }
 }
+
