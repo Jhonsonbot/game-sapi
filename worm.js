@@ -8,11 +8,18 @@ canvas.height = tileSize * tileCount;
 
 let snake = [{ x: 10, y: 10 }];
 let food = spawnFood();
+let score = 0;
 
 let dx = 1, dy = 0;
 let nextDx = dx, nextDy = dy;
-let speed = 150; // lebih lambat = lebih mudah dikendalikan
+let speed = 150;
 let gameInterval;
+
+const snakeImg = new Image();
+snakeImg.src = "./snake.png"; // pastikan file ini ada
+
+const foodImg = new Image();
+foodImg.src = "./food.png"; // pastikan file ini ada
 
 function spawnFood() {
   let x = Math.floor(Math.random() * tileCount);
@@ -21,19 +28,16 @@ function spawnFood() {
 }
 
 function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.fillStyle = "#fff7e6";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // gambar makanan
-  ctx.fillStyle = "red";
-  ctx.beginPath();
-  ctx.arc(food.x * tileSize + tileSize / 2, food.y * tileSize + tileSize / 2, tileSize / 2.5, 0, Math.PI * 2);
-  ctx.fill();
+  // Gambar makanan
+  ctx.drawImage(foodImg, food.x * tileSize, food.y * tileSize, tileSize, tileSize);
 
-  // gambar cacing
-  ctx.fillStyle = "green";
-  snake.forEach((part, i) => {
-    ctx.fillRect(part.x * tileSize, part.y * tileSize, tileSize, tileSize);
+  // Gambar cacing
+  snake.forEach(part => {
+    ctx.drawImage(snakeImg, part.x * tileSize, part.y * tileSize, tileSize, tileSize);
   });
 }
 
@@ -41,22 +45,24 @@ function update() {
   dx = nextDx;
   dy = nextDy;
 
-  const head = { x: snake[0].x + dx, y: snake[0].y + dy };
+  let head = { x: snake[0].x + dx, y: snake[0].y + dy };
 
-  // tabrakan
-  if (
-    head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount ||
-    snake.some(p => p.x === head.x && p.y === head.y)
-  ) {
-    alert("Game Over!");
+  // Wrap-around behavior
+  head.x = (head.x + tileCount) % tileCount;
+  head.y = (head.y + tileCount) % tileCount;
+
+  // Tabrakan dengan badan
+  if (snake.some(part => part.x === head.x && part.y === head.y)) {
+    alert("Game Over!\nScore: " + score);
     clearInterval(gameInterval);
-    location.reload();
     return;
   }
 
   snake.unshift(head);
 
   if (head.x === food.x && head.y === food.y) {
+    score++;
+    document.getElementById("score").textContent = "Score: " + score;
     food = spawnFood();
   } else {
     snake.pop();
@@ -81,10 +87,7 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
-// Tombol arah layar
-window.setDirection = setDirection;
-
-// Swipe
+// Swipe touchscreen
 let touchStartX = 0, touchStartY = 0;
 canvas.addEventListener("touchstart", e => {
   touchStartX = e.touches[0].clientX;
