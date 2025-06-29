@@ -259,12 +259,31 @@ function startAutoMilk() {
   setInterval(() => {
     const total = userData.cows.reduce((sum, lv) => sum + lv, 0);
     userData.milk += total;
+
+    // Tampilkan animasi di setiap tile sapi
+    const cowTiles = document.querySelectorAll(".tile.cow");
+    cowTiles.forEach(tile => animateMilkAtTile(tile));
+
     update();
   }, 20000);
 }
+
 
 // Bind tombol HTML ke fungsi
 window.collectMilk = collectMilk;
 window.sellMilk = sellMilk;
 window.buyCow = buyCow;
 window.buyBarn = buyBarn;
+
+function animateMilkAtTile(tile) {
+  const milk = document.createElement("div");
+  milk.className = "milk-animation";
+  milk.style.left = "28px"; // posisi di tengah tile 80x80
+  milk.style.top = "10px";
+
+  tile.appendChild(milk);
+
+  setTimeout(() => {
+    milk.remove();
+  }, 1000); // Hapus setelah animasi selesai
+}
