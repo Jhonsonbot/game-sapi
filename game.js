@@ -39,11 +39,12 @@ const milkCountEl = document.getElementById("milkCount");
 const pointsEl = document.getElementById("points");
 const gridMap = document.getElementById("gridMap");
 
-const loginButton = document.createElement("button");
-loginButton.textContent = "🔐 Login Google";
-loginButton.style.marginTop = "20px";
-loginButton.onclick = () => signInWithPopup(auth, provider);
-document.body.appendChild(loginButton);
+function signInWithGoogle() {
+  signInWithPopup(auth, provider).catch((error) => {
+    alert("❌ Login gagal: " + error.message);
+  });
+}
+
 
 onAuthStateChanged(auth, async (user) => {
   if (user) {
