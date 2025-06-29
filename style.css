@@ -9,8 +9,6 @@ body {
 #gameArea {
   position: relative;
 }
-background-size: 100% 100%;
-
 .status-panel, .action-panel {
   margin-bottom: 20px;
 }
