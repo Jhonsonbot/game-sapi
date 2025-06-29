@@ -202,3 +202,8 @@ function startAutoMilk() {
     update();
   }, 20000);
 }
+// Tambahkan ini di akhir game.js
+window.collectMilk = collectMilk;
+window.sellMilk = sellMilk;
+window.buyCow = buyCow;
+window.buyBarn = buyBarn;
