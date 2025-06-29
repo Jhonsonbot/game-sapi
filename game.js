@@ -291,3 +291,29 @@ function animateMilkAtTile(tile) {
     milk.remove();
   }, 3000); // durasi + sedikit buffer
 }
+// Fungsi untuk membuka kandang (hilangkan gambar penutup)
+window.bukaPetak = function () {
+  const kandang = document.getElementById("kandangPenutup");
+  if (kandang) {
+    kandang.style.display = "none";
+  }
+};
+let lastActivity = Date.now();
+
+function autoTutupKandang() {
+  const kandang = document.getElementById("kandangPenutup");
+  if (!kandang) return;
+  
+  setInterval(() => {
+    if (Date.now() - lastActivity > 30000) { // 30 detik
+      kandang.style.display = "block";
+    }
+  }, 5000);
+}
+
+document.addEventListener("click", () => {
+  lastActivity = Date.now();
+});
+
+// panggil setelah login berhasil
+autoTutupKandang();
