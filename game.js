@@ -212,7 +212,7 @@ function collectMilk() {
 
 function sellMilk() {
   if (userData.milk < 100) {
-    alert("❌ Minimal jual susu adalah 100!");
+    alert("❌ Minimum jual susu 100!");
     return;
   }
 
