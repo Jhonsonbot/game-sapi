@@ -45,10 +45,12 @@ function signInWithGoogle() {
   });
 }
 
-
 onAuthStateChanged(auth, async (user) => {
+  const loginBtn = document.querySelector("button[onclick='signInWithGoogle()']");
+
   if (user) {
-    loginButton.style.display = "none";
+    if (loginBtn) loginBtn.style.display = "none";
+
     const ref = doc(db, "users", user.uid);
     const snap = await getDoc(ref);
 
@@ -59,10 +61,11 @@ onAuthStateChanged(auth, async (user) => {
       userData.milk = Number.isFinite(data.milk) ? data.milk : 0;
       userData.points = Number.isFinite(data.points) ? data.points : 0;
 
-      // Sinkronisasi jika cows tidak sesuai jumlah sapi di map
+      // Sinkronisasi jumlah cows sesuai jumlah cow di map
       const expected = userData.map.filter(t => t === "cow").length;
       while (userData.cows.length < expected) userData.cows.push(1);
     } else {
+      // Buat data awal untuk user baru
       userData.map[0] = "cow";
       userData.cows = [1];
       userData.milk = 0;
@@ -73,7 +76,7 @@ onAuthStateChanged(auth, async (user) => {
     renderUI();
     startAutoMilk();
   } else {
-    loginButton.style.display = "block";
+    if (loginBtn) loginBtn.style.display = "inline-block";
   }
 });
 
