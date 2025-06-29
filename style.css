@@ -194,17 +194,19 @@ button:hover {
   height: 48px;
   background-color: #6c4c2f;
   color: #fff;
-  font-size: 24px;
+  font-size: 22px;
   line-height: 48px;
   text-align: center;
   border-radius: 50%;
   cursor: pointer;
-  top: 100px;   /* ⬅️ Ubah sesuai posisi dekor lain */
-  left: 200px;  /* ⬅️ Ubah sesuai posisi yang kamu inginkan */
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
   transition: transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .decor.game-button:hover {
   transform: scale(1.1);
+  background-color: #5a3e24;
 }
