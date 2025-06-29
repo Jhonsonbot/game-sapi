@@ -124,18 +124,18 @@ button:hover {
   }
   100% {
     opacity: 0;
-    transform: translateY(-30px) scale(0.8);
+    transform: translateY(-40px) scale(0.9);
   }
 }
 
 .milk-animation {
   position: absolute;
-  width: 24px;
-  height: 24px;
-  background-image: url('./assets/milk.webp');
+  width: 28px;
+  height: 28px;
+  background-image: url('./assets/milk.webp'); /* ganti ke gambar kamu */
   background-size: contain;
   background-repeat: no-repeat;
-  animation: milkOut 1s ease-out forwards;
+  animation: milkOut 2.5s ease-out forwards; /* durasi diperpanjang */
   pointer-events: none;
   z-index: 10;
 }
