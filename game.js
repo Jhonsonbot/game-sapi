@@ -92,6 +92,11 @@ function renderUI() {
   cowCountEl.textContent = userData.cows.length;
   milkCountEl.textContent = Math.floor(userData.milk);
   pointsEl.textContent = Math.floor(userData.points);
+
+  const buyBarnBtn = document.getElementById("buyBarnBtn");
+  if (buyBarnBtn) {
+    buyBarnBtn.style.display = userData.map.length >= 36 ? "none" : "inline-block";
+  }
   renderGrid();
 }
 
