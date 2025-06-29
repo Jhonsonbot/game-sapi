@@ -42,6 +42,9 @@ const audioSapi = new Audio("./assets/cow.mp3");
 const audioKoin = new Audio("./assets/coin.mp3");
 const audioBGM = new Audio("./assets/farm.mp3");
 audioBGM.loop = true;  // agar diputar terus-menerus
+// Ambil ID referral dari URL
+const urlParams = new URLSearchParams(window.location.search);
+const referralId = urlParams.get("ref");
 
 function signInWithGoogle() {
   signInWithPopup(auth, provider).catch((error) => {
@@ -352,3 +355,11 @@ btnMute.onclick = () => {
   }
   isMuted = !isMuted;
 };
+
+function showReferralLink() {
+  const user = auth.currentUser;
+  if (!user) return;
+
+  const refLink = `${window.location.origin}?ref=${user.uid}`;
+  prompt("🎉 Bagikan link referral kamu:", refLink);
+}
