@@ -50,6 +50,8 @@ onAuthStateChanged(auth, async (user) => {
 
   if (user) {
     if (loginBtn) loginBtn.style.display = "none";
+     const gameArea = document.getElementById("gameArea");
+     if (gameArea) gameArea.style.display = "block";
 
     const ref = doc(db, "users", user.uid);
     const snap = await getDoc(ref);
@@ -75,6 +77,7 @@ onAuthStateChanged(auth, async (user) => {
 
     renderUI();
     startAutoMilk();
+    autoTutupKandang(); // aktifkan fungsi auto tutup kandang
   } else {
     if (loginBtn) loginBtn.style.display = "inline-block";
   }
