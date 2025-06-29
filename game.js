@@ -111,23 +111,12 @@ function renderGrid() {
 
       let imageUrl;
       switch (level) {
-        case 1:
-          imageUrl = "./assets/cow-real.jpeg";
-          break;
-        case 2:
-          imageUrl = "./assets/cow-lv2.gif";
-          break;
-        case 3:
-          imageUrl = "./assets/cow-lv3.gif";
-          break;
-        case 4:
-          imageUrl = "./assets/cow-lv4.gif";
-          break;
-        case 5:
-          imageUrl = "./assets/cow-lv5.gif";
-          break;
-        default:
-          imageUrl = "./assets/cow-real.jpeg";
+        case 1: imageUrl = "./assets/cow-real.jpeg"; break;
+        case 2: imageUrl = "./assets/cow-lv2.gif"; break;
+        case 3: imageUrl = "./assets/cow-lv3.gif"; break;
+        case 4: imageUrl = "./assets/cow-lv4.gif"; break;
+        case 5: imageUrl = "./assets/cow-lv5.gif"; break;
+        default: imageUrl = "./assets/cow-real.jpeg";
       }
 
       tile.style.backgroundImage = `url('${imageUrl}')`;
@@ -155,22 +144,13 @@ function renderGrid() {
     gridMap.appendChild(tile);
   });
 
-  // === Sesuaikan posisi dan ukuran kandangPenutup berdasarkan .grid-container ===
+  // Tampilkan kandangPenutup jika ada
   const kandang = document.getElementById("kandangPenutup");
-  const container = document.querySelector(".grid-container");
-
-  if (kandang && container) {
-    const { width, height } = container.getBoundingClientRect();
-
-    kandang.style.width = width + "px";
-    kandang.style.height = height + "px";
-
-    const containerTop = container.offsetTop;
-    kandang.style.top = containerTop + "px";
-    kandang.style.left = "0";
+  if (kandang) {
     kandang.style.display = "block";
   }
 }
+
 
 
 function handleTileClick(index) {
