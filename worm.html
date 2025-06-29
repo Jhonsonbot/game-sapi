@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Game Cacing</title>
-  <link rel="stylesheet" href="worm.css">
+  <link rel="stylesheet" href="worm.css" />
 </head>
 <body>
-  <h1>🐍 Game Cacing</h1>
+  <h2>🐍 Game Cacing</h2>
   <div id="gameContainer">
     <canvas id="gameCanvas" width="400" height="400"></canvas>
-    <div id="scoreBoard">Skor: <span id="score">0</span></div>
-    <button id="btnRestart">🔄 Ulangi</button>
+    <div id="scorePanel">Skor: <span id="score">0</span></div>
+    <button onclick="restartGame()">🔄 Mulai Ulang</button>
     <button onclick="window.location.href='index.html'">🏡 Kembali</button>
   </div>
+
   <script type="module" src="worm.js"></script>
 </body>
 </html>
+
