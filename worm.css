@@ -1,0 +1,37 @@
+body {
+  background-color: #fefbd8;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  padding: 20px;
+}
+
+#gameContainer {
+  display: inline-block;
+  position: relative;
+}
+
+#gameCanvas {
+  border: 2px solid #444;
+  background-color: #e0ffe0;
+}
+
+#scoreBoard {
+  margin-top: 10px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+button {
+  margin: 5px;
+  padding: 10px 15px;
+  font-size: 16px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #218838;
+}
