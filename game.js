@@ -102,9 +102,28 @@ function renderGrid() {
       const cowIdx = cowIndexes.indexOf(i);
       const level = userData.cows[cowIdx] || 1;
 
-      tile.style.backgroundImage = level > 1
-        ? "url('./assets/cow-upgrade.gif')"
-        : "url('./assets/cow-real.jpeg')";
+     let imageUrl;
+switch (level) {
+  case 1:
+    imageUrl = "./assets/cow-real.jpeg";
+    break;
+  case 2:
+    imageUrl = "./assets/cow-lv2.gif";
+    break;
+  case 3:
+    imageUrl = "./assets/cow-lv3.gif";
+    break;
+  case 4:
+    imageUrl = "./assets/cow-lv4.gif";
+    break;
+  case 5:
+    imageUrl = "./assets/cow-lv5.gif";
+    break;
+  default:
+    imageUrl = "./assets/cow-real.jpeg";
+}
+tile.style.backgroundImage = `url('${imageUrl}')`;
+
 
       const label = document.createElement("div");
       label.textContent = `Lv${level}`;
