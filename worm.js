@@ -24,7 +24,7 @@ bodyImg.src = "./assets/snake_green_blob_32.png";
 const foodImages = [
   "./assets/apple_red_32.png",
   "./assets/apple_green_32.png",
-  "./assets.oliebol_32.png",
+  "./assets/oliebol_32.png",
   "./assets/apple_alt_32.png"
 ];
 
