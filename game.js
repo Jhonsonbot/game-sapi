@@ -57,8 +57,8 @@ onAuthStateChanged(auth, async (user) => {
 
   if (user) {
     if (loginBtn) loginBtn.style.display = "none";
-     const gameArea = document.getElementById("gameArea");
-     if (gameArea) gameArea.style.display = "block";
+    const gameArea = document.getElementById("gameArea");
+    if (gameArea) gameArea.style.display = "block";
 
     const ref = doc(db, "users", user.uid);
     const snap = await getDoc(ref);
@@ -79,13 +79,36 @@ onAuthStateChanged(auth, async (user) => {
       userData.cows = [1];
       userData.milk = 0;
       userData.points = 0;
-      await setDoc(ref, userData);
+
+      const newUserData = { ...userData };
+
+      // Simpan ID referral jika ada dan bukan diri sendiri
+      if (referralId && referralId !== user.uid) {
+        newUserData.referrer = referralId;
+      }
+
+      await setDoc(ref, newUserData);
+
+      // Bonus ke referrer (sekali saja)
+      if (referralId && referralId !== user.uid) {
+        const referrerRef = doc(db, "users", referralId);
+        const refSnap = await getDoc(referrerRef);
+        if (refSnap.exists()) {
+          const refData = refSnap.data();
+          const bonus = 5000;
+
+          await setDoc(referrerRef, {
+            ...refData,
+            points: (refData.points || 0) + bonus
+          });
+        }
+      }
     }
 
     renderUI();
     startAutoMilk();
-    autoTutupKandang(); // aktifkan fungsi auto tutup kandang
-   audioBGM.play().catch(e => console.warn("Audio auto-play diblokir:", e)); 
+    autoTutupKandang();
+    audioBGM.play().catch(e => console.warn("Audio auto-play diblokir:", e));
   } else {
     if (loginBtn) loginBtn.style.display = "inline-block";
   }
