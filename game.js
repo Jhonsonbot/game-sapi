@@ -1,4 +1,3 @@
-// game.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import {
   getAuth,
@@ -11,7 +10,6 @@ import {
   doc,
   getDoc,
   setDoc,
-  updateDoc,
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -57,28 +55,13 @@ onAuthStateChanged(auth, async (user) => {
       const data = snap.data();
       userData.map = Array.isArray(data.map) ? data.map : Array(25).fill("empty");
       userData.cows = Array.isArray(data.cows) ? data.cows : [];
-      userData.milk = typeof data.milk === "number" ? data.milk : 0;
-      userData.points = typeof data.points === "number" ? data.points : 0;
+      userData.milk = Number.isFinite(data.milk) ? data.milk : 0;
+      userData.points = Number.isFinite(data.points) ? data.points : 0;
 
-      // ✅ Recovery: jika map berisi sapi tapi cows tidak lengkap
-      const expectedCowCount = userData.map.filter(type => type === "cow").length;
-      const actualCowCount = userData.cows.length;
-
-      if (actualCowCount < expectedCowCount) {
-        const cowsToAdd = expectedCowCount - actualCowCount;
-        userData.cows.push(...Array(cowsToAdd).fill(1)); // default level 1
-      }
-
-      // ✅ Recovery tambahan: jika cows ada tapi map tidak punya "cow"
-      if (!userData.map.includes("cow") && userData.cows.length > 0) {
-        userData.map[0] = "cow";
-      }
-
-      // ✅ Jika map dan cows tidak sinkron total, bisa juga disinkronkan ulang (opsional)
-      // userData.map = userData.map.map((v, i) => v === "cow" && !userData.cows[i] ? "empty" : v);
-
+      // Sinkronisasi jika cows tidak sesuai jumlah sapi di map
+      const expected = userData.map.filter(t => t === "cow").length;
+      while (userData.cows.length < expected) userData.cows.push(1);
     } else {
-      // Jika user baru
       userData.map[0] = "cow";
       userData.cows = [1];
       userData.milk = 0;
@@ -95,14 +78,15 @@ onAuthStateChanged(auth, async (user) => {
 
 function renderUI() {
   cowCountEl.textContent = userData.cows.length;
-  milkCountEl.textContent = userData.milk;
-  pointsEl.textContent = userData.points;
+  milkCountEl.textContent = Math.floor(userData.milk);
+  pointsEl.textContent = Math.floor(userData.points);
   renderGrid();
 }
 
 function renderGrid() {
   gridMap.innerHTML = "";
   let cowIdx = 0;
+
   userData.map.forEach((type, i) => {
     const tile = document.createElement("div");
     tile.className = `tile ${type}`;
@@ -115,12 +99,14 @@ function renderGrid() {
 
       const label = document.createElement("div");
       label.textContent = `Lv${level}`;
-      label.style.fontSize = "12px";
-      label.style.background = "#fff9";
-      label.style.borderRadius = "6px";
-      label.style.padding = "1px 4px";
-      label.style.marginTop = "60px";
-      label.style.display = "inline-block";
+      label.style.cssText = `
+        font-size: 12px;
+        background: #fff9;
+        border-radius: 6px;
+        padding: 1px 4px;
+        margin-top: 60px;
+        display: inline-block;
+      `;
 
       const upBtn = document.createElement("button");
       upBtn.textContent = "🔼";
@@ -154,7 +140,7 @@ function handleTileClick(index) {
 function upgradeCow(index) {
   if (userData.points >= 200) {
     userData.points -= 200;
-    userData.cows[index] += 1;
+    userData.cows[index] = (userData.cows[index] || 1) + 1;
     update();
   } else {
     alert("🔼 Poin tidak cukup untuk upgrade sapi!");
@@ -175,11 +161,11 @@ function sellMilk() {
 }
 
 function buyCow() {
-  alert("Sekarang kamu bisa beli sapi dengan klik petak kosong!");
+  alert("Klik petak kosong untuk menaruh sapi (biaya 100 poin).");
 }
 
 function buyBarn() {
-  alert("Mode kandang belum diaktifkan. Nantikan update selanjutnya!");
+  alert("Kandang belum tersedia. Nantikan update selanjutnya.");
 }
 
 async function update() {
@@ -189,8 +175,8 @@ async function update() {
   await setDoc(ref, {
     cows: userData.cows,
     map: userData.map,
-    milk: userData.milk,
-    points: userData.points
+    milk: Number.isFinite(userData.milk) ? userData.milk : 0,
+    points: Number.isFinite(userData.points) ? userData.points : 0
   });
   renderUI();
 }
@@ -202,7 +188,8 @@ function startAutoMilk() {
     update();
   }, 20000);
 }
-// Tambahkan ini di akhir game.js
+
+// Bind tombol HTML ke fungsi
 window.collectMilk = collectMilk;
 window.sellMilk = sellMilk;
 window.buyCow = buyCow;
