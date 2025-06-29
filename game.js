@@ -85,16 +85,18 @@ function renderUI() {
 
 function renderGrid() {
   gridMap.innerHTML = "";
-  let cowIdx = 0;
+  const cowIndexes = userData.map
+    .map((type, idx) => (type === "cow" ? idx : null))
+    .filter(idx => idx !== null);
 
   userData.map.forEach((type, i) => {
     const tile = document.createElement("div");
     tile.className = `tile ${type}`;
 
     if (type === "cow") {
-      // Ambil level dari userData.cows berdasarkan cowIdx
-      const level = Number.isInteger(userData.cows[cowIdx]) ? userData.cows[cowIdx] : 1;
+      const cowIdx = cowIndexes.indexOf(i); // Ini yang paling penting!
 
+      const level = userData.cows[cowIdx] || 1;
       tile.style.backgroundImage = level > 1
         ? "url('./assets/cow-upgrade.gif')"
         : "url('./assets/cow-real.jpeg')";
@@ -111,12 +113,10 @@ function renderGrid() {
       const upBtn = document.createElement("button");
       upBtn.textContent = "🔼";
       upBtn.style.fontSize = "10px";
-      upBtn.disabled = (level >= 5); // Matikan tombol jika sudah max
-      upBtn.onclick = () => upgradeCow(cowIdx);
+      upBtn.onclick = () => upgradeCow(cowIdx); // cowIdx benar sekarang
 
       tile.appendChild(label);
       tile.appendChild(upBtn);
-      cowIdx++;
     } else {
       tile.addEventListener("click", () => handleTileClick(i));
     }
@@ -124,6 +124,7 @@ function renderGrid() {
     gridMap.appendChild(tile);
   });
 }
+
 
 function handleTileClick(index) {
   if (userData.map[index] === "empty") {
