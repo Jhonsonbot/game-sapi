@@ -110,3 +110,25 @@ document.addEventListener("keydown", (e) => {
 
 // Mulai game
 restartGame();
+let touchStartX = 0;
+let touchStartY = 0;
+
+canvas.addEventListener("touchstart", (e) => {
+  touchStartX = e.touches[0].clientX;
+  touchStartY = e.touches[0].clientY;
+});
+
+canvas.addEventListener("touchend", (e) => {
+  const dxSwipe = e.changedTouches[0].clientX - touchStartX;
+  const dySwipe = e.changedTouches[0].clientY - touchStartY;
+
+  if (Math.abs(dxSwipe) > Math.abs(dySwipe)) {
+    // Geser horizontal
+    if (dxSwipe > 30 && dx !== -1) setDirection(1, 0);     // kanan
+    else if (dxSwipe < -30 && dx !== 1) setDirection(-1, 0); // kiri
+  } else {
+    // Geser vertikal
+    if (dySwipe > 30 && dy !== -1) setDirection(0, 1);     // bawah
+    else if (dySwipe < -30 && dy !== 1) setDirection(0, -1); // atas
+  }
+});
