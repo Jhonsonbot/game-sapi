@@ -196,11 +196,6 @@ function upgradeCow(cowIndex) {
   }
 }
 
-}
-
-
-
-
 function collectMilk() {
   const total = userData.cows.reduce((sum, lv) => sum + lv, 0);
   userData.milk += total;
