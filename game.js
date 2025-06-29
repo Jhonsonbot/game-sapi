@@ -31,7 +31,7 @@ let userData = {
   cows: [],
   milk: 0,
   points: 0,
-  map: Array(25).fill("empty")
+  map: Array(4).fill("empty")
 };
 
 const cowCountEl = document.getElementById("cowCount");
