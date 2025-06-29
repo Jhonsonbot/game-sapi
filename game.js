@@ -140,12 +140,19 @@ function handleTileClick(index) {
 function upgradeCow(index) {
   if (userData.points >= 200) {
     userData.points -= 200;
-    userData.cows[index] = (userData.cows[index] || 1) + 1;
+
+    // Amankan data sapi sebelum upgrade
+    if (!Number.isInteger(userData.cows[index])) {
+      userData.cows[index] = 1; // default level
+    }
+
+    userData.cows[index] += 1;
     update();
   } else {
     alert("🔼 Poin tidak cukup untuk upgrade sapi!");
   }
 }
+
 
 function collectMilk() {
   const total = userData.cows.reduce((sum, lv) => sum + lv, 0);
@@ -171,6 +178,12 @@ function buyBarn() {
 async function update() {
   const user = auth.currentUser;
   if (!user) return;
+
+  // Pastikan semua data sapi valid (hanya angka)
+  userData.cows = userData.cows.map(lv =>
+    Number.isInteger(lv) && lv > 0 ? lv : 1
+  );
+
   const ref = doc(db, "users", user.uid);
   await setDoc(ref, {
     cows: userData.cows,
@@ -178,8 +191,10 @@ async function update() {
     milk: Number.isFinite(userData.milk) ? userData.milk : 0,
     points: Number.isFinite(userData.points) ? userData.points : 0
   });
+
   renderUI();
 }
+
 
 function startAutoMilk() {
   setInterval(() => {
