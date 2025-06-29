@@ -111,6 +111,7 @@ function renderGrid() {
       const upBtn = document.createElement("button");
       upBtn.textContent = "🔼";
       upBtn.style.fontSize = "10px";
+      upBtn.disabled = (level >= 5); // Matikan tombol jika sudah max
       upBtn.onclick = () => upgradeCow(cowIdx);
 
       tile.appendChild(label);
@@ -138,20 +139,27 @@ function handleTileClick(index) {
 }
 
 function upgradeCow(index) {
+  const currentLevel = userData.cows[index];
+
+  if (!Number.isInteger(currentLevel)) {
+    userData.cows[index] = 1;
+  }
+
+  // Maksimal level sapi: 5
+  if (currentLevel >= 5) {
+    alert("🔝 Sapi sudah di level maksimal!");
+    return;
+  }
+
   if (userData.points >= 200) {
     userData.points -= 200;
-
-    // Amankan data sapi sebelum upgrade
-    if (!Number.isInteger(userData.cows[index])) {
-      userData.cows[index] = 1; // default level
-    }
-
     userData.cows[index] += 1;
-    update();
+    update(); // renderUI akan dipanggil di sini
   } else {
     alert("🔼 Poin tidak cukup untuk upgrade sapi!");
   }
 }
+
 
 
 function collectMilk() {
