@@ -109,28 +109,28 @@ function renderGrid() {
       const cowIdx = cowIndexes.indexOf(i);
       const level = userData.cows[cowIdx] || 1;
 
-     let imageUrl;
-switch (level) {
-  case 1:
-    imageUrl = "./assets/cow-real.jpeg";
-    break;
-  case 2:
-    imageUrl = "./assets/cow-lv2.gif";
-    break;
-  case 3:
-    imageUrl = "./assets/cow-lv3.gif";
-    break;
-  case 4:
-    imageUrl = "./assets/cow-lv4.gif";
-    break;
-  case 5:
-    imageUrl = "./assets/cow-lv5.gif";
-    break;
-  default:
-    imageUrl = "./assets/cow-real.jpeg";
-}
-tile.style.backgroundImage = `url('${imageUrl}')`;
+      let imageUrl;
+      switch (level) {
+        case 1:
+          imageUrl = "./assets/cow-real.jpeg";
+          break;
+        case 2:
+          imageUrl = "./assets/cow-lv2.gif";
+          break;
+        case 3:
+          imageUrl = "./assets/cow-lv3.gif";
+          break;
+        case 4:
+          imageUrl = "./assets/cow-lv4.gif";
+          break;
+        case 5:
+          imageUrl = "./assets/cow-lv5.gif";
+          break;
+        default:
+          imageUrl = "./assets/cow-real.jpeg";
+      }
 
+      tile.style.backgroundImage = `url('${imageUrl}')`;
 
       const label = document.createElement("div");
       label.textContent = `Lv${level}`;
@@ -154,27 +154,24 @@ tile.style.backgroundImage = `url('${imageUrl}')`;
 
     gridMap.appendChild(tile);
   });
-  
-// === Update ukuran & posisi kandangPenutup agar menutupi grid ===
-const kandang = document.getElementById("kandangPenutup");
-if (kandang) {
-  const tileSize = 80;
-  const gridSize = Math.ceil(Math.sqrt(userData.map.length));
-  const totalWidth = gridSize * tileSize;
-  const totalHeight = gridSize * tileSize;
 
-  kandang.style.width = totalWidth + "px";
-  kandang.style.height = totalHeight + "px";
+  // === Sesuaikan posisi dan ukuran kandangPenutup berdasarkan .grid-container ===
+  const kandang = document.getElementById("kandangPenutup");
+  const container = document.querySelector(".grid-container");
 
-  // Sesuaikan posisi vertikal sesuai posisi gridMap
-  const gridMapTop = gridMap.getBoundingClientRect().top + window.scrollY;
-  kandang.style.top = gridMapTop + "px";
+  if (kandang && container) {
+    const { width, height } = container.getBoundingClientRect();
 
-  kandang.style.left = "50%";
-  kandang.style.transform = "translateX(-50%)";
-  kandang.style.display = "block"; // tampilkan kandang saat awal
+    kandang.style.width = width + "px";
+    kandang.style.height = height + "px";
+
+    const containerTop = container.offsetTop;
+    kandang.style.top = containerTop + "px";
+    kandang.style.left = "0";
+    kandang.style.display = "block";
+  }
 }
-}
+
 
 function handleTileClick(index) {
   if (userData.map[index] === "empty") {
