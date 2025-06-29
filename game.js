@@ -30,10 +30,10 @@ const provider = new GoogleAuthProvider();
 const db = getFirestore(app);
 
 let userData = {
-  cows: [], // now array of levels
+  cows: [],
   milk: 0,
   points: 0,
-  map: Array(25).fill("empty") // 5x5 tile grid
+  map: Array(25).fill("empty")
 };
 
 const cowCountEl = document.getElementById("cowCount");
@@ -56,10 +56,11 @@ onAuthStateChanged(auth, async (user) => {
       userData = snap.data();
     } else {
       userData.map[0] = "cow";
-      userData.cows.push(1); // level 1 sapi pertama
+      userData.cows.push(1);
       await setDoc(ref, userData);
     }
     renderUI();
+    startAutoMilk();
   } else {
     loginButton.style.display = "block";
   }
@@ -110,7 +111,7 @@ function handleTileClick(index) {
     if (userData.points >= 100) {
       userData.points -= 100;
       userData.map[index] = "cow";
-      userData.cows.push(1); // sapi level 1 baru
+      userData.cows.push(1);
       update();
     } else {
       alert("💰 Poin tidak cukup untuk menaruh sapi!");
@@ -155,4 +156,12 @@ async function update() {
   const ref = doc(db, "users", user.uid);
   await updateDoc(ref, userData);
   renderUI();
+}
+
+function startAutoMilk() {
+  setInterval(() => {
+    const total = userData.cows.reduce((sum, lv) => sum + lv, 0);
+    userData.milk += total;
+    update();
+  }, 20000); // tiap 20 detik
 }
