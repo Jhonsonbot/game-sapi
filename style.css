@@ -1,3 +1,4 @@
+/* Gaya dasar */
 body {
   font-family: Arial, sans-serif;
   background-color: #eef9f1;
@@ -23,15 +24,7 @@ button:hover {
   background-color: #218838;
 }
 
-.decorations {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-  gap: 10px;
-  margin-bottom: 20px;
-  justify-items: center;
-  align-items: center;
-}
-
+/* Grid map */
 .grid-map {
   display: grid;
   grid-template-columns: repeat(5, 80px);
@@ -48,6 +41,7 @@ button:hover {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+  position: relative;
 }
 .tile.barn {
   background-image: url('./assets/fence.png');
@@ -59,40 +53,42 @@ button:hover {
   background-color: #eaeaea;
 }
 
-.barn-container {
-  display: none; /* Disembunyikan karena diganti grid-map */
+/* Label dan tombol upgrade dalam tile */
+.tile .cow-label {
+  font-size: 12px;
+  background: #fff9;
+  border-radius: 6px;
+  padding: 1px 4px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  margin: 2px;
+}
+.tile button {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  font-size: 10px;
+  padding: 2px 4px;
 }
 
-.cow {
-  background-image: url('./assets/cow-real.jpeg');
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  width: 80px;
-  height: 80px;
-  border-radius: 10px;
-}
-
-.cow.empty {
-  background-image: none;
-  background-color: #eaeaea;
-  display: flex;
+/* Dekorasi */
+.decorations {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 10px;
+  margin-bottom: 20px;
+  justify-items: center;
   align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  color: #888;
 }
 
 .decor {
-  display: inline-block;
   width: 100px;
   height: 100px;
-  margin: 10px;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
 }
-
 .decor.cart {
   background-image: url('./assets/cart.png');
 }
@@ -112,12 +108,13 @@ button:hover {
   background-image: url('./assets/bannerGreen.png');
 }
 
+/* Ikon susu */
 .milk-icon {
   background-image: url('./assets/milk.webp');
   background-size: contain;
   background-repeat: no-repeat;
-  width: 40px;
-  height: 40px;
+  width: 24px;
+  height: 24px;
   display: inline-block;
   vertical-align: middle;
 }
