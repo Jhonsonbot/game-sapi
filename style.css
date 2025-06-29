@@ -32,26 +32,35 @@ button:hover {
   align-items: center;
 }
 
-.barn-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+.grid-map {
+  display: grid;
+  grid-template-columns: repeat(5, 80px);
+  gap: 4px;
   justify-content: center;
+  margin: 20px auto;
 }
 
-.barn {
-  background-image: url('./assets/fence.png');
-  background-size: cover;
+.tile {
+  width: 80px;
+  height: 80px;
+  background-color: #bffcc6;
+  border: 1px solid #ccc;
+  background-size: contain;
+  background-repeat: no-repeat;
   background-position: center;
-  padding: 10px;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  width: 200px;
-  height: 200px;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  position: relative;
+}
+.tile.barn {
+  background-image: url('./assets/fence.png');
+}
+.tile.cow {
+  background-image: url('https://i.ibb.co/1LkFMcS/cow-icon.png');
+}
+.tile.empty {
+  background-color: #eaeaea;
+}
+
+.barn-container {
+  display: none; /* Disembunyikan karena diganti grid-map */
 }
 
 .cow {
