@@ -307,7 +307,7 @@ function startAutoMilk() {
     cowTiles.forEach(tile => animateMilkAtTile(tile));
 
     update();
-  }, 10000);
+  }, 5000); // 5 detik
 }
 
 
