@@ -128,8 +128,8 @@ function renderGrid() {
 
 function handleTileClick(index) {
   if (userData.map[index] === "empty") {
-    if (userData.points >= 100) {
-      userData.points -= 100;
+    if (userData.points >= 10000) {
+      userData.points -= 10000;
       userData.map[index] = "cow";
       userData.cows.push(1); // hanya tambahkan sapi baru di sini
       update();
@@ -152,8 +152,8 @@ function upgradeCow(cowIndex) {
     return;
   }
 
-  if (userData.points >= 200) {
-    userData.points -= 200;
+  if (userData.points >= 2000) {
+    userData.points -= 2000;
     userData.cows[cowIndex] += 1;
     update(); // hanya update, tidak ubah struktur cows atau map
   } else {
@@ -178,18 +178,24 @@ function sellMilk() {
 }
 
 function buyCow() {
-  alert("Klik petak kosong untuk menaruh sapi (biaya 100 poin).");
+  alert("Klik petak kosong untuk menaruh sapi (biaya 1000 poin).");
 }
 
 function buyBarn() {
-  if (userData.points >= 200) {
-    userData.points -= 200;
-    userData.map.push("empty"); // Tambah 1 petak kosong
+  if (userData.map.length >= 36) {
+    alert("📦 Kandang sudah mencapai ukuran maksimal (6x6)!");
+    return;
+  }
+
+  if (userData.points >= 200000) {
+    userData.points -= 200000;
+    userData.map.push("empty");
     update();
   } else {
-    alert("💸 Poin tidak cukup untuk beli kandang!");
+    alert("💰 Poin tidak cukup untuk beli kandang! (200k poin)");
   }
 }
+
 
 
 async function update() {
