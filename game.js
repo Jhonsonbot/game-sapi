@@ -182,8 +182,15 @@ function buyCow() {
 }
 
 function buyBarn() {
-  alert("Kandang belum tersedia. Nantikan update selanjutnya.");
+  if (userData.points >= 200) {
+    userData.points -= 200;
+    userData.map.push("empty"); // Tambah 1 petak kosong
+    update();
+  } else {
+    alert("💸 Poin tidak cukup untuk beli kandang!");
+  }
 }
+
 
 async function update() {
   const user = auth.currentUser;
