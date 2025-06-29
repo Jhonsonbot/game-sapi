@@ -384,5 +384,8 @@ function showReferralLink() {
   if (!user) return;
 
   const refLink = `${window.location.origin}?ref=${user.uid}`;
-  prompt("🎉 Bagikan link referral kamu:", refLink);
+  const refText = document.getElementById("refLinkText");
+  if (refText) {
+    refText.textContent = "Link kamu: " + refLink;
+  }
 }
