@@ -52,24 +52,40 @@ onAuthStateChanged(auth, async (user) => {
     loginButton.style.display = "none";
     const ref = doc(db, "users", user.uid);
     const snap = await getDoc(ref);
+
     if (snap.exists()) {
       const data = snap.data();
-      userData.cows = Array.isArray(data.cows) ? data.cows : [1];
       userData.map = Array.isArray(data.map) ? data.map : Array(25).fill("empty");
+      userData.cows = Array.isArray(data.cows) ? data.cows : [];
       userData.milk = typeof data.milk === "number" ? data.milk : 0;
       userData.points = typeof data.points === "number" ? data.points : 0;
 
-      // Recovery if map has no cow but cows exist
+      // ✅ Recovery: jika map berisi sapi tapi cows tidak lengkap
+      const expectedCowCount = userData.map.filter(type => type === "cow").length;
+      const actualCowCount = userData.cows.length;
+
+      if (actualCowCount < expectedCowCount) {
+        const cowsToAdd = expectedCowCount - actualCowCount;
+        userData.cows.push(...Array(cowsToAdd).fill(1)); // default level 1
+      }
+
+      // ✅ Recovery tambahan: jika cows ada tapi map tidak punya "cow"
       if (!userData.map.includes("cow") && userData.cows.length > 0) {
         userData.map[0] = "cow";
       }
+
+      // ✅ Jika map dan cows tidak sinkron total, bisa juga disinkronkan ulang (opsional)
+      // userData.map = userData.map.map((v, i) => v === "cow" && !userData.cows[i] ? "empty" : v);
+
     } else {
+      // Jika user baru
       userData.map[0] = "cow";
       userData.cows = [1];
       userData.milk = 0;
       userData.points = 0;
       await setDoc(ref, userData);
     }
+
     renderUI();
     startAutoMilk();
   } else {
