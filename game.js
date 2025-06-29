@@ -367,7 +367,7 @@ document.addEventListener("click", () => {
 });
 
 // panggil setelah login berhasil
-autoTutupKandang();
+
 const btnMute = document.getElementById("btnMute");
 let isMuted = false;
 
