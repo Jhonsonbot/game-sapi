@@ -59,6 +59,8 @@ onAuthStateChanged(auth, async (user) => {
     } else {
       userData.map[0] = "cow";
       userData.cows = [1];
+      userData.milk = 0;
+      userData.points = 0;
       await setDoc(ref, userData);
     }
     renderUI();
@@ -161,7 +163,7 @@ async function update() {
   const user = auth.currentUser;
   if (!user) return;
   const ref = doc(db, "users", user.uid);
-  await updateDoc(ref, userData);
+  await setDoc(ref, userData);
   renderUI();
 }
 
