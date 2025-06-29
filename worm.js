@@ -29,6 +29,13 @@ function drawGame() {
   }
 }
 
+function setDirection(x, y) {
+  if (x !== -dx || y !== -dy) {
+    dx = x;
+    dy = y;
+  }
+}
+
 function moveSnake() {
   const head = { x: snake[0].x + dx, y: snake[0].y + dy };
 
