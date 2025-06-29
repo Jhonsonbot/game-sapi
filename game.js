@@ -181,12 +181,6 @@ function renderGrid() {
 
     gridMap.appendChild(tile);
   });
-
-  // Tampilkan kandangPenutup jika ada
-  const kandang = document.getElementById("kandangPenutup");
-  if (kandang) {
-    kandang.style.display = "block";
-  }
 }
 
 
