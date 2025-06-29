@@ -165,24 +165,37 @@ function handleTileClick(index) {
 
 
 function upgradeCow(cowIndex) {
-  const currentLevel = userData.cows[cowIndex];
+  let currentLevel = userData.cows[cowIndex];
 
   if (!Number.isInteger(currentLevel)) {
     userData.cows[cowIndex] = 1;
+    currentLevel = 1;
   }
 
-  if (userData.cows[cowIndex] >= 5) {
+  if (currentLevel >= 5) {
     alert("🔝 Sapi sudah di level maksimal!");
     return;
   }
 
-  if (userData.points >= 2000) {
-    userData.points -= 2000;
+  // Harga berdasarkan level saat ini
+  const upgradeCosts = {
+    1: 20000,
+    2: 40000,
+    3: 80000,
+    4: 150000
+  };
+
+  const cost = upgradeCosts[currentLevel] || 99999;
+
+  if (userData.points >= cost) {
+    userData.points -= cost;
     userData.cows[cowIndex] += 1;
-    update(); // hanya update, tidak ubah struktur cows atau map
+    update();
   } else {
-    alert("🔼 Poin tidak cukup untuk upgrade sapi!");
+    alert(`🔼 Poin tidak cukup! Butuh ${cost} poin untuk upgrade ke Lv${currentLevel + 1}.`);
   }
+}
+
 }
 
 
