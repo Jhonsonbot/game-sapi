@@ -85,7 +85,7 @@ function renderGrid() {
     if (type === "cow") {
       const level = userData.cows[cowIdx] || 1;
       tile.style.backgroundImage = level > 1
-        ? "url('./assets/cow-real.gif')"
+        ? "url('./assets/cow-upgrade.gif')"
         : "url('./assets/cow-real.png')";
 
       const label = document.createElement("div");
