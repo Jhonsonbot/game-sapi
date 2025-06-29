@@ -1,7 +1,7 @@
 /* Gaya dasar */
 body {
   font-family: Arial, sans-serif;
-  background-color: #eef9f1;
+  background-color: #f0f8ff;
   text-align: center;
   margin: 0;
   padding: 20px;
@@ -27,12 +27,13 @@ button:hover {
 }
 
 /* Grid map */
-.grid-map {
-  display: grid;
-  gap: 4px;
-  justify-content: center;
-  margin: 20px auto;
+#gridMap {
+  background-color: #4b3621; /* coklat tanah */
+  padding: 10px;
+  border-radius: 12px;
+  box-shadow: 0 0 12px #0005;
 }
+
 
 .tile {
   width: 80px;
