@@ -123,6 +123,9 @@ function renderGrid() {
 
     gridMap.appendChild(tile);
   });
+  const gridSize = Math.ceil(Math.sqrt(userData.map.length));
+  gridMap.style.display = "grid";
+  gridMap.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
 }
 
 
