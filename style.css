@@ -143,11 +143,21 @@ button:hover {
 }
 #kandangPenutup {
   position: absolute;
-  background: rgba(0, 0, 0, 0.5) url('./assets/kandang.jpg') center center no-repeat;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  background-image: url('./assets/kandang.jpg');
   background-size: cover;
-  z-index: 20;
+  background-position: center;
+  background-repeat: no-repeat;
   display: none;
-  border-radius: 8px;
-  pointer-events: auto;
-  transition: opacity 0.3s ease;
+  cursor: pointer;
+}
+
+.grid-container {
+  position: relative;
+  width: fit-content;
+  margin: auto;
 }
