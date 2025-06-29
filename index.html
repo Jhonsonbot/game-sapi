@@ -5,25 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Peternakan Sapi</title>
   <link rel="stylesheet" href="style.css" />
-  <style>
-  #kandangPenutup {
-    position: absolute;
-    z-index: 99;
-    background-image: url('./assets/kandang.jpg');
-    background-size: 100% 100%; /* penuh sesuai ukuran grid */
-    background-position: center;
-    background-repeat: no-repeat;
-    cursor: pointer;
-    transition: opacity 0.4s ease;
-    display: none;
-  }
-</style>
 </head>
 <body>
   <h1>🐄 Peternakan Sapi</h1>
 
   <!-- Area Game yang hanya muncul setelah login -->
-  <div id="gameArea" style="display: none;">
+  <div id="gameArea" style="display: none; position: relative;">
     <div class="status-panel">
       <p>🐄 Total Sapi: <span id="cowCount">1</span></p>
       <p>🥛 Susu: <span class="milk-icon"></span> <span id="milkCount">0</span></p>
@@ -45,12 +32,14 @@
       <div class="decor cart"></div>
     </div>
 
-    <!-- Kandang dan Game Map -->
+    <!-- Penutup Kandang (harus di atas grid) -->
     <div id="kandangPenutup" onclick="bukaPetak()"></div>
+
+    <!-- Grid Peta -->
     <div class="grid-map" id="gridMap"></div>
   </div>
 
-  <!-- Tombol login tetap di luar -->
+  <!-- Tombol Login -->
   <div id="loginSection">
     <button onclick="signInWithGoogle()">🔐 Login Google</button>
   </div>
