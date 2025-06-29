@@ -179,25 +179,32 @@ button:hover {
   display: none;
 }
 
+.decor {
+  width: 48px;
+  height: 48px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+}
+
+/* Game button disesuaikan ukurannya dan posisinya */
 .decor.game-button {
+  width: 48px;
+  height: 48px;
   background-color: #6c4c2f;
   color: #fff;
-  font-weight: bold;
-  padding: 10px 16px;
-  border-radius: 8px;
-  box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-  cursor: pointer;
-  display: inline-block;
+  font-size: 24px;
+  line-height: 48px;
   text-align: center;
-  font-size: 14px;
-
-  /* Posisi agar sejajar */
-  position: absolute;
-  top: 160px;  /* ← sesuaikan ini agar sama tinggi dengan dekor lain */
-  left: 40px;  /* ← sesuaikan posisi horizontal */
+  border-radius: 50%;
+  cursor: pointer;
+  top: 100px;   /* ⬅️ Ubah sesuai posisi dekor lain */
+  left: 200px;  /* ⬅️ Ubah sesuai posisi yang kamu inginkan */
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease;
 }
 
 .decor.game-button:hover {
-  background-color: #8b603f;
-  transform: scale(1.05);
+  transform: scale(1.1);
 }
