@@ -154,20 +154,25 @@ tile.style.backgroundImage = `url('${imageUrl}')`;
 
     gridMap.appendChild(tile);
   });
-  // === Update ukuran kandangPenutup ===
+  
+// === Update ukuran & posisi kandangPenutup agar menutupi grid ===
 const kandang = document.getElementById("kandangPenutup");
 if (kandang) {
-  const petakSize = 80; // ukuran 1 petak (px)
+  const tileSize = 80;
   const gridSize = Math.ceil(Math.sqrt(userData.map.length));
-  const totalWidth = gridSize * petakSize;
-  const totalHeight = gridSize * petakSize;
+  const totalWidth = gridSize * tileSize;
+  const totalHeight = gridSize * tileSize;
 
   kandang.style.width = totalWidth + "px";
   kandang.style.height = totalHeight + "px";
-  kandang.style.top = "160px"; // sesuaikan sesuai posisi gridMap
+
+  // Sesuaikan posisi vertikal sesuai posisi gridMap
+  const gridMapTop = gridMap.getBoundingClientRect().top + window.scrollY;
+  kandang.style.top = gridMapTop + "px";
+
   kandang.style.left = "50%";
   kandang.style.transform = "translateX(-50%)";
-  kandang.style.display = "block"; // tampilkan pertama kali
+  kandang.style.display = "block"; // tampilkan kandang saat awal
 }
 }
 
