@@ -1,67 +1,69 @@
-/* Body dan container */
 body {
   font-family: Arial, sans-serif;
+  background-color: #e7f5e9;
   text-align: center;
-  background-color: #fefbe9;
   margin: 0;
   padding: 20px;
 }
 
+h2 {
+  margin-bottom: 10px;
+  color: #2d572c;
+}
+
 #gameContainer {
   display: inline-block;
-  background-color: #d4e09b;
+  background-color: #fefefe;
   padding: 20px;
-  border-radius: 16px;
-  box-shadow: 0 0 12px rgba(0,0,0,0.2);
+  border: 3px solid #4CAF50;
+  border-radius: 15px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
 }
 
-/* Canvas responsif */
-canvas {
-  background-color: #fff;
-  border: 2px solid #888;
-  max-width: 100%;
-  height: auto;
+#gameCanvas {
   display: block;
   margin: 0 auto 10px;
+  border: 2px solid #2d572c;
+  background-color: #fff;
 }
 
-/* Panel skor */
-#scorePanel {
-  font-size: 18px;
-  margin-bottom: 10px;
-}
-
-/* Tombol utama */
-button {
-  padding: 10px 16px;
-  margin: 5px;
-  font-size: 16px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  background-color: #28a745;
-  color: white;
-}
-button:hover {
-  background-color: #218838;
-}
-
-/* Tombol kontrol arah */
 #controls {
-  text-align: center;
-  margin-top: 10px;
+  margin: 10px 0;
 }
 
 #controls button {
-  width: 60px;
-  height: 60px;
-  font-size: 24px;
-  margin: 5px;
-  border-radius: 10px;
   background-color: #4CAF50;
   color: white;
+  font-size: 18px;
+  padding: 8px 12px;
+  margin: 5px;
   border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
-#controls button:active {
-  background-color: #388E3C;
+
+#controls button:hover {
+  background-color: #388e3c;
+}
+
+#scorePanel {
+  font-size: 20px;
+  margin-top: 10px;
+  color: #333;
+}
+
+button {
+  margin-top: 10px;
+  font-size: 16px;
+  background-color: #1976D2;
+  color: white;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #1565C0;
 }
