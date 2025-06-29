@@ -54,9 +54,11 @@ onAuthStateChanged(auth, async (user) => {
     const snap = await getDoc(ref);
     if (snap.exists()) {
       userData = snap.data();
+      if (!Array.isArray(userData.cows)) userData.cows = [];
+      if (!Array.isArray(userData.map)) userData.map = Array(25).fill("empty");
     } else {
       userData.map[0] = "cow";
-      userData.cows.push(1);
+      userData.cows = [1];
       await setDoc(ref, userData);
     }
     renderUI();
@@ -75,13 +77,14 @@ function renderUI() {
 
 function renderGrid() {
   gridMap.innerHTML = "";
+  let cowIdx = 0;
   userData.map.forEach((type, i) => {
     const tile = document.createElement("div");
     tile.className = `tile ${type}`;
 
     if (type === "cow") {
-      const cowIndex = userData.map.slice(0, i + 1).filter(t => t === "cow").length - 1;
-      const level = userData.cows[cowIndex] || 1;
+      const level = userData.cows[cowIdx] || 1;
+      tile.style.backgroundImage = "url('./assets/14b9f99b-5f39-43a8-9501-2688b2f60372.gif')";
       const label = document.createElement("div");
       label.textContent = `Lv${level}`;
       label.style.fontSize = "12px";
@@ -94,10 +97,11 @@ function renderGrid() {
       const upBtn = document.createElement("button");
       upBtn.textContent = "🔼";
       upBtn.style.fontSize = "10px";
-      upBtn.onclick = () => upgradeCow(cowIndex);
+      upBtn.onclick = () => upgradeCow(cowIdx);
 
       tile.appendChild(label);
       tile.appendChild(upBtn);
+      cowIdx++;
     } else {
       tile.addEventListener("click", () => handleTileClick(i));
     }
@@ -163,5 +167,5 @@ function startAutoMilk() {
     const total = userData.cows.reduce((sum, lv) => sum + lv, 0);
     userData.milk += total;
     update();
-  }, 20000); // tiap 20 detik
+  }, 20000);
 }
