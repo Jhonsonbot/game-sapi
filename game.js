@@ -38,6 +38,8 @@ const cowCountEl = document.getElementById("cowCount");
 const milkCountEl = document.getElementById("milkCount");
 const pointsEl = document.getElementById("points");
 const gridMap = document.getElementById("gridMap");
+const audioSapi = new Audio("./assets/cow.mp3");
+const audioKoin = new Audio("./assets/coin.mp3");
 
 function signInWithGoogle() {
   signInWithPopup(auth, provider).catch((error) => {
@@ -210,7 +212,9 @@ function sellMilk() {
   userData.points += earn;
   userData.milk = 0;
   update();
+  audioKoin.play(); // 🔊 Suara koin
 }
+
 
 function buyCow() {
   alert("Klik petak kosong untuk menaruh sapi (biaya 100000 poin).");
@@ -295,8 +299,10 @@ window.bukaPetak = function () {
   const kandang = document.getElementById("kandangPenutup");
   if (kandang) {
     kandang.style.display = "none";
+    audioSapi.play(); // 🔊 Suara sapi
   }
 };
+
 let lastActivity = Date.now();
 
 function autoTutupKandang() {
