@@ -331,10 +331,10 @@ let isMuted = false;
 btnMute.onclick = () => {
   if (isMuted) {
     audioBGM.play();
-    btnMute.textContent = "🔇 Mute";
+    btnMute.textContent = "🔇";
   } else {
     audioBGM.pause();
-    btnMute.textContent = "🔊 Unmute";
+    btnMute.textContent = "🔊";
   }
   isMuted = !isMuted;
 };
