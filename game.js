@@ -84,7 +84,10 @@ function renderGrid() {
 
     if (type === "cow") {
       const level = userData.cows[cowIdx] || 1;
-      tile.style.backgroundImage = "url('./assets/14b9f99b-5f39-43a8-9501-2688b2f60372.gif')";
+      tile.style.backgroundImage = level > 1
+        ? "url('./assets/cow-real.gif')"
+        : "url('./assets/cow-real.png')";
+
       const label = document.createElement("div");
       label.textContent = `Lv${level}`;
       label.style.fontSize = "12px";
