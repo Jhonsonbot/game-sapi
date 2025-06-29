@@ -146,15 +146,14 @@ button:hover {
   top: 0;
   left: 0;
   z-index: 10;
-  width: 100%;
-  height: 100%;
   background-image: url('./assets/kandang.jpg');
   background-size: cover;
-  background-position: center;
   background-repeat: no-repeat;
+  background-position: center;
   display: none;
   cursor: pointer;
 }
+
 
 .grid-container {
   position: relative;
