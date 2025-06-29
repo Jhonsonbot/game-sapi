@@ -208,14 +208,14 @@ function collectMilk() {
 }
 
 function sellMilk() {
-  const earn = userData.milk * 10;
+  const earn = Math.floor(userData.milk * 0.1);
   userData.points += earn;
   userData.milk = 0;
   update();
 }
 
 function buyCow() {
-  alert("Klik petak kosong untuk menaruh sapi (biaya 1000 poin).");
+  alert("Klik petak kosong untuk menaruh sapi (biaya 100000 poin).");
 }
 
 function buyBarn() {
