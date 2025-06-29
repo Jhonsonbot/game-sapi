@@ -180,25 +180,24 @@ button:hover {
 }
 
 .decor.game-button {
-  width: 120px;
-  height: 40px;
-  background-color: #7a5c30;
-  color: white;
+  background-color: #6c4c2f;
+  color: #fff;
   font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid #fff;
-  border-radius: 10px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
   cursor: pointer;
+  display: inline-block;
+  text-align: center;
+  font-size: 14px;
+
+  /* Posisi agar sejajar */
   position: absolute;
-  top: 10px;  /* sesuaikan posisi */
-  right: 10px; /* sesuaikan posisi */
-  box-shadow: 2px 2px 5px #0004;
-  transition: transform 0.2s;
+  top: 160px;  /* ← sesuaikan ini agar sama tinggi dengan dekor lain */
+  left: 40px;  /* ← sesuaikan posisi horizontal */
 }
 
 .decor.game-button:hover {
+  background-color: #8b603f;
   transform: scale(1.05);
-  background-color: #926f3a;
 }
