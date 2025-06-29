@@ -278,12 +278,16 @@ window.buyBarn = buyBarn;
 function animateMilkAtTile(tile) {
   const milk = document.createElement("div");
   milk.className = "milk-animation";
-  milk.style.left = "28px"; // posisi di tengah tile 80x80
+  milk.style.left = "28px";
   milk.style.top = "10px";
 
   tile.appendChild(milk);
 
+  // Tambahkan delay animasi acak (0-0.5s)
+  const delay = Math.random() * 0.5;
+  milk.style.animationDelay = `${delay}s`;
+
   setTimeout(() => {
     milk.remove();
-  }, 1000); // Hapus setelah animasi selesai
+  }, 3000); // durasi + sedikit buffer
 }
