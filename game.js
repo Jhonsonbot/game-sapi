@@ -46,10 +46,12 @@ onAuthStateChanged(auth, async (user) => {
     const ref = doc(db, "users", user.uid);
     const snap = await getDoc(ref);
     if (snap.exists()) {
-      userData = snap.data();
-    } else {
-      await setDoc(ref, userData);
-    }
+  userData = snap.data();
+} else {
+  userData.map[0] = "cow"; // letakkan sapi pertama di tile 0
+  await setDoc(ref, userData);
+}
+
     renderUI();
   } else {
     signInWithPopup(auth, provider);
