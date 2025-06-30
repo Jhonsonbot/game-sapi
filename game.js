@@ -51,6 +51,8 @@ const referralId = urlParams.get("ref");
 
 console.log("📲 Deteksi perangkat:", navigator.userAgent);
 
+import { browserLocalPersistence, setPersistence } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+
 function signInWithGoogle() {
   const isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
   if (isMobile) {
