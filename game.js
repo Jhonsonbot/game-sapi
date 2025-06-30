@@ -57,25 +57,25 @@ import {
   setPersistence,
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
+// 💡 Taruh setPersistence di awal halaman
+setPersistence(auth, browserLocalPersistence).catch((e) =>
+  console.error("Gagal setPersistence:", e)
+);
+
 function signInWithGoogle() {
   const isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
 
-  setPersistence(auth, browserLocalPersistence)
-    .then(() => {
-      if (isMobile) {
-        console.log("📱 Mobile detected: login with redirect");
-        signInWithRedirect(auth, provider);
-      } else {
-        console.log("💻 Desktop detected: login with popup");
-        signInWithPopup(auth, provider).catch((error) => {
-          alert("❌ Login gagal: " + error.message);
-        });
-      }
-    })
-    .catch((error) => {
-      console.error("❌ Gagal setPersistence:", error.message);
+  if (isMobile) {
+    console.log("📱 Mobile detected: login with redirect");
+    signInWithRedirect(auth, provider);
+  } else {
+    console.log("💻 Desktop detected: login with popup");
+    signInWithPopup(auth, provider).catch((error) => {
+      alert("❌ Login gagal: " + error.message);
     });
+  }
 }
+
 
 window.signInWithGoogle = signInWithGoogle;
 
