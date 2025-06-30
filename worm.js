@@ -224,3 +224,12 @@ window.addEventListener("orientationchange", () => {
     draw();
   }, 300);
 });
+
+window.toggleControls = function () {
+  const controls = document.getElementById("controls");
+  if (controls.style.display === "none" || controls.style.display === "") {
+    controls.style.display = "flex";
+  } else {
+    controls.style.display = "none";
+  }
+};
