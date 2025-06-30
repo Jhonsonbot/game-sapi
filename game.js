@@ -66,9 +66,11 @@ function signInWithGoogle() {
 
 onAuthStateChanged(auth, async (user) => {
   const loginBtn = document.getElementById("loginBtn"); // Ganti querySelector onclick
+  const loginSection = document.getElementById("loginSection");
 
   if (user) {
     if (loginBtn) loginBtn.style.display = "none";
+    if (loginSection) loginSection.style.display = "none";
 
     const gameArea = document.getElementById("gameArea");
     if (gameArea) gameArea.style.display = "block";
@@ -123,6 +125,7 @@ onAuthStateChanged(auth, async (user) => {
     audioBGM.play().catch(e => console.warn("Audio auto-play diblokir:", e));
   } else {
     if (loginBtn) loginBtn.style.display = "inline-block";
+    if (loginSection) loginSection.style.display = "flex";
   }
 });
 
