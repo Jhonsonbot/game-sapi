@@ -73,19 +73,23 @@ document.getElementById("loginBtn")?.addEventListener("click", () => {
   signInWithGoogle();
 });
 
+// ⬅️ Tangani hasil login redirect terlebih dahulu (khusus mobile)
+getRedirectResult(auth)
+  .then((result) => {
+    if (result && result.user) {
+      console.log("✅ Login berhasil via redirect:", result.user.displayName);
+    }
+  })
+  .catch((error) => {
+    console.error("❌ Redirect login error:", error.message);
+    alert("Login gagal (redirect): " + error.message);
+  });
+
+// ⬇️ Baru lanjut onAuthStateChanged seperti biasa
 onAuthStateChanged(auth, async (user) => {
   const loginBtn = document.getElementById("loginBtn");
   const loginSection = document.getElementById("loginSection");
 
-  try {
-    const result = await getRedirectResult(auth);
-    if (result && result.user) {
-      console.log("✅ Login berhasil via redirect:", result.user.displayName);
-    }
-  } catch (error) {
-    console.error("❌ Redirect login error:", error.message);
-    alert("Login gagal (redirect): " + error.message);
-  }
 
   if (user) {
     if (loginBtn) loginBtn.style.display = "none";
