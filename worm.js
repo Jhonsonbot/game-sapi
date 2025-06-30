@@ -80,9 +80,13 @@ function update() {
   if (snake.some(p => p.x === head.x && p.y === head.y)) {
     // tubuh jadi makanan
     snake.forEach(part => spawnFood(part.x, part.y));
-    alert("💀 Game Over! Skor: " + score);
+    
     clearInterval(gameInterval);
-    return;
+tambahPoinKeFirestore(score).then(() => {
+  alert("💀 Game Over! Skor: " + score);
+});
+return;
+
   }
 
   snake.unshift(head);
@@ -146,6 +150,21 @@ canvas.addEventListener("touchend", e => {
 // Mulai game
 draw();
 gameInterval = setInterval(update, speed);
+
+async function tambahPoinKeFirestore(skor) {
+  const user = auth.currentUser;
+  if (!user) return console.warn("User belum login!");
+
+  const ref = doc(db, "users", user.uid);
+  const snap = await getDoc(ref);
+  const current = snap.exists() ? (snap.data().poin || 0) : 0;
+
+  await updateDoc(ref, {
+    poin: current + skor
+  });
+
+  console.log(`✅ Poin ditambahkan: ${skor}, total baru: ${current + skor}`);
+}
 
 import { auth, db } from './game.js';
 import {
