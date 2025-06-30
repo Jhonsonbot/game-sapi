@@ -7,26 +7,14 @@ import {
 
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
+const container = document.getElementById("gameContainer");
 
 const tileSize = 32;
 let tileCountX = 20;
 let tileCountY = 20;
 
-function resizeCanvas() {
-  tileCountX = Math.floor(window.innerWidth / tileSize);
-  tileCountY = Math.floor(window.innerHeight / tileSize);
-  canvas.width = tileCountX * tileSize;
-  canvas.height = tileCountY * tileSize;
-}
-
-resizeCanvas();
-window.addEventListener('resize', () => {
-  resizeCanvas();
-  draw();
-});
-
 let score = 0;
-let snake = [{ x: Math.floor(tileCountX / 2), y: Math.floor(tileCountY / 2) }];
+let snake = [];
 let dx = 1, dy = 0;
 let nextDx = dx, nextDy = dy;
 let speed = 150;
@@ -46,6 +34,37 @@ const foodImages = [
 ];
 
 let foods = [];
+
+// ======================= RESIZE & MODE =======================
+
+function resizeCanvas() {
+  if (container.classList.contains("fullscreen")) {
+    tileCountX = Math.floor(window.innerWidth / tileSize);
+    tileCountY = Math.floor(window.innerHeight / tileSize);
+  } else {
+    tileCountX = Math.floor(640 / tileSize);
+    tileCountY = Math.floor(640 / tileSize);
+  }
+  canvas.width = tileCountX * tileSize;
+  canvas.height = tileCountY * tileSize;
+}
+
+let isFullscreen = true;
+function toggleFullscreen() {
+  isFullscreen = !isFullscreen;
+  if (isFullscreen) {
+    container.classList.remove("medium");
+    container.classList.add("fullscreen");
+  } else {
+    container.classList.remove("fullscreen");
+    container.classList.add("medium");
+  }
+  resizeCanvas();
+  restartGame(); // restart agar posisi ulang tengah
+}
+window.toggleFullscreen = toggleFullscreen;
+
+// ======================= GAME =======================
 
 function spawnFood(x = null, y = null) {
   const pos = {
@@ -98,12 +117,10 @@ function update() {
 
   snake.unshift(head);
 
-  let ate = false;
   foods = foods.filter(food => {
     if (food.x === head.x && food.y === head.y) {
       score += 10;
       grow += 1;
-      ate = true;
       return false;
     }
     return true;
@@ -124,20 +141,25 @@ function setDirection(x, y) {
     nextDy = y;
   }
 }
+window.setDirection = setDirection;
 
 function restartGame() {
   score = 0;
-  snake = [{ x: Math.floor(tileCountX / 2), y: Math.floor(tileCountY / 2) }];
   dx = 1;
   dy = 0;
   nextDx = dx;
   nextDy = dy;
   foods = [];
+  snake = [{ x: Math.floor(tileCountX / 2), y: Math.floor(tileCountY / 2) }];
   for (let i = 0; i < 10; i++) spawnFood();
   clearInterval(gameInterval);
+  resizeCanvas();
   gameInterval = setInterval(update, speed);
   draw();
 }
+window.restartGame = restartGame;
+
+// ======================= INPUT =======================
 
 document.addEventListener("keydown", (e) => {
   switch (e.key) {
@@ -166,11 +188,7 @@ canvas.addEventListener("touchend", e => {
   }
 });
 
-window.setDirection = setDirection;
-window.restartGame = restartGame;
-
-draw();
-gameInterval = setInterval(update, speed);
+// ======================= FIRESTORE =======================
 
 async function tambahPoinKeFirestore(skor) {
   const user = auth.currentUser;
@@ -189,3 +207,12 @@ async function tambahPoinKeFirestore(skor) {
 
   console.log(`✅ Poin ditambahkan: ${skor}, total baru: ${current + skor}`);
 }
+
+// ======================= INISIALISASI =======================
+
+resizeCanvas();
+restartGame();
+window.addEventListener('resize', () => {
+  resizeCanvas();
+  draw();
+});
