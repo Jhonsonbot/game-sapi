@@ -41,19 +41,12 @@ const cowCountEl = document.getElementById("cowCount");
 const milkCountEl = document.getElementById("milkCount");
 const pointsEl = document.getElementById("points");
 const gridMap = document.getElementById("gridMap");
-const audioSapi = new Audio("./assets/cow.mp3");
-const audioKoin = new Audio("./assets/coin.mp3");
-const audioBGM = new Audio("./assets/farm.mp3");
-audioBGM.loop = true;  // agar diputar terus-menerus
-// Ambil ID referral dari URL
+
 const urlParams = new URLSearchParams(window.location.search);
 const referralId = urlParams.get("ref");
 
-console.log("📲 Deteksi perangkat:", navigator.userAgent);
-
 function signInWithGoogle() {
   const isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
-
   if (isMobile) {
     try {
       signInWithRedirect(auth, provider);
@@ -69,11 +62,9 @@ function signInWithGoogle() {
 window.signInWithGoogle = signInWithGoogle;
 
 document.getElementById("loginBtn")?.addEventListener("click", () => {
-  console.log("🔑 Tombol login diklik");
   signInWithGoogle();
 });
 
-// ⬅️ Tangani hasil login redirect terlebih dahulu (khusus mobile)
 getRedirectResult(auth)
   .then((result) => {
     if (result && result.user) {
@@ -85,11 +76,9 @@ getRedirectResult(auth)
     alert("Login gagal (redirect): " + error.message);
   });
 
-// ⬇️ Baru lanjut onAuthStateChanged seperti biasa
 onAuthStateChanged(auth, async (user) => {
   const loginBtn = document.getElementById("loginBtn");
   const loginSection = document.getElementById("loginSection");
-
 
   if (user) {
     if (loginBtn) loginBtn.style.display = "none";
@@ -141,15 +130,11 @@ onAuthStateChanged(auth, async (user) => {
     }
 
     renderUI();
-    startAutoMilk();
-    autoTutupKandang();
-    audioBGM.play().catch(e => console.warn("Audio auto-play diblokir:", e));
   } else {
     if (loginBtn) loginBtn.style.display = "inline-block";
     if (loginSection) loginSection.style.display = "flex";
   }
 });
-
 
 function renderUI() {
   cowCountEl.textContent = userData.cows.length;
