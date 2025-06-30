@@ -12,16 +12,13 @@
   <div id="gameContainer" class="fullscreen">
     <canvas id="gameCanvas"></canvas>
 
+    <!-- Skor -->
     <div id="scorePanel">Skor: <span id="score">0</span></div>
 
-    <!-- Tombol navigasi tambahan -->
-    <div id="gameActions">
-      <button onclick="restartGame()">🔄 Mulai Ulang</button>
-      <button onclick="toggleFullscreen()">🖥️ Ukuran Layar</button>
-      <button onclick="window.location.href='index.html'">🏡 Kembali</button>
-    </div>
+    <!-- Tombol kecil untuk toggle kontrol -->
+    <button id="toggleControlsBtn" onclick="toggleControls()">🎮</button>
 
-    <!-- Tombol kontrol arah -->
+    <!-- Tombol arah -->
     <div id="controls">
       <div class="arrow-row">
         <button onclick="setDirection(0, -1)">⬆️</button>
@@ -34,7 +31,13 @@
         <button onclick="setDirection(0, 1)">⬇️</button>
       </div>
     </div>
-    <button id="toggleControlsBtn" onclick="toggleControls()">🎮 Show Controls</button>
+
+    <!-- Aksi utama -->
+    <div id="gameActions">
+      <button onclick="restartGame()">🔄 Mulai Ulang</button>
+      <button onclick="toggleFullscreen()">🖥️ Ukuran Layar</button>
+      <button onclick="window.location.href='index.html'">🏡 Kembali</button>
+    </div>
   </div>
 
   <script type="module" src="worm.js"></script>
