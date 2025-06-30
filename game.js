@@ -36,7 +36,7 @@ let userData = {
   points: 0,
   map: Array(4).fill("empty")
 };
-
+const registerBtn = document.getElementById("registerBtn");
 const cowCountEl = document.getElementById("cowCount");
 const milkCountEl = document.getElementById("milkCount");
 const pointsEl = document.getElementById("points");
