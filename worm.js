@@ -1,6 +1,3 @@
-// Perbaikan utama: menggambar cacing utuh dari awal, baru membesar saat makan
-// Gambar awal: kepala.png, badan1.png, badan2.png, ekor.png di folder ./assets
-
 import { auth, db } from './firebase.js';
 import {
   doc,
@@ -24,12 +21,20 @@ let speed = 150;
 let grow = 0;
 let gameInterval;
 
-// === Gambar cacing ===
-const headImg = new Image(); headImg.src = "./assets/kepala.png";
-const bodyImgs = [new Image(), new Image()];
+// === GANTI BAGIAN INI DI AWAL ===
+const headImg = new Image();
+headImg.src = "./assets/kepala.png";
+
+const bodyImgs = [
+  new Image(),
+  new Image()
+];
 bodyImgs[0].src = "./assets/badan1.png";
 bodyImgs[1].src = "./assets/badan2.png";
-const tailImg = new Image(); tailImg.src = "./assets/ekor.png";
+
+const tailImg = new Image();
+tailImg.src = "./assets/ekor.png";
+
 
 const foodImages = [
   "./assets/apple_red_32.png",
@@ -52,9 +57,11 @@ function resizeCanvas() {
   canvas.height = tileCountY * tileSize;
 }
 
+let isFullscreen = true;
 function toggleFullscreen() {
-  container.classList.toggle("fullscreen");
-  container.classList.toggle("medium");
+  isFullscreen = !isFullscreen;
+  container.classList.toggle("fullscreen", isFullscreen);
+  container.classList.toggle("medium", !isFullscreen);
   resizeCanvas();
   restartGame();
 }
@@ -70,10 +77,16 @@ function spawnFood(x = null, y = null) {
   foods.push(pos);
 }
 
+for (let i = 0; i < 10; i++) spawnFood();
+
+setInterval(() => {
+  if (foods.length < 40) spawnFood();
+}, 2000);
+
 function getSnakeSize() {
   const base = 32;
   const max = 64;
-  return Math.min(base + Math.floor(score / 50), max); // membesar setelah makan beberapa kali
+  return Math.min(base + Math.floor(snake.length / 5), max);
 }
 
 function draw() {
@@ -85,13 +98,19 @@ function draw() {
   });
 
   const size = getSnakeSize();
-  const offset = (tileSize - size) / 2;
 
   snake.forEach((part, index) => {
+    const offset = (tileSize - size) / 2;
     let img;
-    if (index === 0) img = headImg;
-    else if (index === snake.length - 1) img = tailImg;
-    else img = bodyImgs[index % 2];
+
+    if (index === 0) {
+      img = headImg;
+    } else if (index === snake.length - 1) {
+      img = tailImg;
+    } else {
+      img = bodyImgs[index % bodyImgs.length];
+    }
+
     ctx.drawImage(img, part.x * tileSize + offset, part.y * tileSize + offset, size, size);
   });
 
@@ -99,8 +118,10 @@ function draw() {
   if (scoreEl) scoreEl.textContent = score;
 }
 
+
 function update() {
-  dx = nextDx; dy = nextDy;
+  dx = nextDx;
+  dy = nextDy;
   const head = {
     x: (snake[0].x + dx + tileCountX) % tileCountX,
     y: (snake[0].y + dy + tileCountY) % tileCountY
@@ -108,9 +129,16 @@ function update() {
 
   if (snake.some(p => p.x === head.x && p.y === head.y)) {
     clearInterval(gameInterval);
-    snake.forEach((part, i) => setTimeout(() => { spawnFood(part.x, part.y); draw(); }, i * 50));
+    snake.forEach((part, i) => {
+      setTimeout(() => {
+        spawnFood(part.x, part.y);
+        draw();
+      }, i * 50);
+    });
     tambahPoinKeFirestore(score).then(() => {
-      setTimeout(() => alert("\uD83D\uDC80 Game Over! Skor: " + score), snake.length * 50 + 200);
+      setTimeout(() => {
+        alert("💀 Game Over! Skor: " + score);
+      }, snake.length * 50 + 200);
     });
     return;
   }
@@ -126,30 +154,31 @@ function update() {
     return true;
   });
 
-  if (grow > 0) grow--;
-  else snake.pop();
+  if (grow > 0) {
+    grow--;
+  } else {
+    snake.pop();
+  }
 
   draw();
 }
 
 function setDirection(x, y) {
   if (x !== -dx || y !== -dy) {
-    nextDx = x; nextDy = y;
+    nextDx = x;
+    nextDy = y;
   }
 }
 window.setDirection = setDirection;
 
 function restartGame() {
   score = 0;
-  dx = 1; dy = 0; nextDx = dx; nextDy = dy;
+  dx = 1;
+  dy = 0;
+  nextDx = dx;
+  nextDy = dy;
   foods = [];
-  snake = [
-    { x: 10, y: 10 },
-    { x: 9, y: 10 },
-    { x: 8, y: 10 },
-    { x: 7, y: 10 },
-    { x: 6, y: 10 }
-  ];
+  snake = [{ x: Math.floor(tileCountX / 2), y: Math.floor(tileCountY / 2) }];
   for (let i = 0; i < 10; i++) spawnFood();
   clearInterval(gameInterval);
   resizeCanvas();
@@ -167,6 +196,7 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
+let touchStartX = 0, touchStartY = 0;
 canvas.addEventListener("touchstart", e => {
   touchStartX = e.touches[0].clientX;
   touchStartY = e.touches[0].clientY;
@@ -183,14 +213,59 @@ canvas.addEventListener("touchend", e => {
   }
 });
 
+window.toggleControls = function () {
+  const controls = document.getElementById("controls");
+  const toggleBtn = document.getElementById("toggleControlsBtn");
+
+  const isHidden = controls.style.display === "none" || getComputedStyle(controls).display === "none";
+
+  controls.style.display = isHidden ? "flex" : "none";
+  toggleBtn.textContent = isHidden ? "❌ Hide Controls" : "🎮 Show Controls";
+};
+
 async function tambahPoinKeFirestore(skor) {
   const user = auth.currentUser;
-  if (!user) return;
+  if (!user) {
+    console.warn("User belum login. Poin tidak disimpan.");
+    return;
+  }
+
   const ref = doc(db, "users", user.uid);
   const snap = await getDoc(ref);
   const current = snap.exists() ? (snap.data().points || 0) : 0;
-  await updateDoc(ref, { points: current + skor });
+
+  await updateDoc(ref, {
+    points: current + skor
+  });
+
+  console.log(`✅ Poin ditambahkan: ${skor}, total baru: ${current + skor}`);
 }
 
 resizeCanvas();
 restartGame();
+
+window.addEventListener('resize', () => {
+  resizeCanvas();
+  draw();
+});
+
+window.addEventListener("orientationchange", () => {
+  setTimeout(() => {
+    resizeCanvas();
+    draw();
+  }, 300);
+});
+
+window.addEventListener("DOMContentLoaded", () => {
+  const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  const controls = document.getElementById("controls");
+  const toggleBtn = document.getElementById("toggleControlsBtn");
+
+  if (isTouch) {
+    controls.style.display = "none";
+    toggleBtn.style.display = "block";
+  } else {
+    controls.style.display = "flex";
+    toggleBtn.style.display = "none";
+  }
+}); tolong perbaiki agar tampilan cacing utuh saat mulai setelah makan baru membesar jangan seperti cacing di sambung sambung
