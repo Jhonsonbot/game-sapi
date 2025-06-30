@@ -227,9 +227,11 @@ window.addEventListener("orientationchange", () => {
 
 window.toggleControls = function () {
   const controls = document.getElementById("controls");
-  if (controls.style.display === "none" || controls.style.display === "") {
-    controls.style.display = "flex";
-  } else {
-    controls.style.display = "none";
-  }
+  const toggleBtn = document.getElementById("toggleControlsBtn");
+
+  const isHidden = controls.style.display === "none" || getComputedStyle(controls).display === "none";
+
+  controls.style.display = isHidden ? "flex" : "none";
+  toggleBtn.textContent = isHidden ? "❌ Hide Controls" : "🎮 Show Controls";
 };
+
