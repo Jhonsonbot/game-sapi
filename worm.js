@@ -1,3 +1,10 @@
+import { auth, db } from './game.js';
+import {
+  doc,
+  getDoc,
+  updateDoc
+} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
@@ -157,19 +164,12 @@ async function tambahPoinKeFirestore(skor) {
 
   const ref = doc(db, "users", user.uid);
   const snap = await getDoc(ref);
-  const current = snap.exists() ? (snap.data().poin || 0) : 0;
+  const current = snap.exists() ? (snap.data().points || 0) : 0;
 
   await updateDoc(ref, {
-    poin: current + skor
+    points: current + skor
   });
 
   console.log(`✅ Poin ditambahkan: ${skor}, total baru: ${current + skor}`);
 }
-
-import { auth, db } from './game.js';
-import {
-  doc,
-  getDoc,
-  updateDoc
-} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
