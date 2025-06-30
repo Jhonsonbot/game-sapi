@@ -146,3 +146,11 @@ canvas.addEventListener("touchend", e => {
 // Mulai game
 draw();
 gameInterval = setInterval(update, speed);
+
+import { auth, db } from './game.js';
+import {
+  doc,
+  getDoc,
+  updateDoc
+} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
