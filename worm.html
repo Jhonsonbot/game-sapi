@@ -8,21 +8,32 @@
 </head>
 <body>
   <h2>🐍 Game Cacing</h2>
-  <div id="gameContainer" class="fullscreen"><!-- default mode -->
-    <canvas id="gameCanvas" width="400" height="400"></canvas>
 
-    <div id="controls">
-      <button onclick="setDirection(0, -1)">⬆️</button><br>
-      <button onclick="setDirection(-1, 0)">⬅️</button>
-      <button onclick="setDirection(1, 0)">➡️</button><br>
-      <button onclick="setDirection(0, 1)">⬇️</button><br>
-      <button onclick="toggleFullscreen()" id="toggleSizeBtn">🖥️ Ukuran Layar</button>
-    </div>
+  <div id="gameContainer" class="fullscreen">
+    <canvas id="gameCanvas"></canvas>
 
     <div id="scorePanel">Skor: <span id="score">0</span></div>
 
-    <button onclick="restartGame()">🔄 Mulai Ulang</button>
-    <button onclick="window.location.href='index.html'">🏡 Kembali</button>
+    <!-- Tombol navigasi tambahan -->
+    <div id="gameActions">
+      <button onclick="restartGame()">🔄 Mulai Ulang</button>
+      <button onclick="toggleFullscreen()">🖥️ Ukuran Layar</button>
+      <button onclick="window.location.href='index.html'">🏡 Kembali</button>
+    </div>
+
+    <!-- Tombol kontrol arah -->
+    <div id="controls">
+      <div class="arrow-row">
+        <button onclick="setDirection(0, -1)">⬆️</button>
+      </div>
+      <div class="arrow-row">
+        <button onclick="setDirection(-1, 0)">⬅️</button>
+        <button onclick="setDirection(1, 0)">➡️</button>
+      </div>
+      <div class="arrow-row">
+        <button onclick="setDirection(0, 1)">⬇️</button>
+      </div>
+    </div>
   </div>
 
   <script type="module" src="worm.js"></script>
