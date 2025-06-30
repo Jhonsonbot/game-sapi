@@ -23,18 +23,14 @@ let gameInterval;
 
 // === GANTI BAGIAN INI DI AWAL ===
 const headImg = new Image();
-headImg.src = "./assets/kepala.png";
+headImg.src = "./assets/snake_yellow_head_64.png";
 
 const bodyImgs = [
   new Image(),
   new Image()
 ];
-bodyImgs[0].src = "./assets/badan1.png";
-bodyImgs[1].src = "./assets/badan2.png";
-
-const tailImg = new Image();
-tailImg.src = "./assets/ekor.png";
-
+bodyImgs[0].src = "./assets/snake_green_blob_64.png";
+bodyImgs[1].src = "./assets/snake_yellow_blob_64.png";
 
 const foodImages = [
   "./assets/apple_red_32.png",
