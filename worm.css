@@ -85,20 +85,29 @@ h2 {
   gap: 10px;
 }
 
+/* Tombol arah tanpa background */
 #controls button {
-  background-color: rgba(76, 175, 80, 0.85);
-  color: white;
-  font-size: 22px;
-  padding: 10px 16px;
-  border: none;
+  background-color: transparent;
+  color: #4CAF50;
+  font-size: 32px;
+  padding: 6px 10px;
+  border: 2px solid transparent;
   border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: transform 0.1s ease;
 }
 
 #controls button:hover {
-  background-color: rgba(56, 142, 60, 0.95);
+  transform: scale(1.1);
 }
+
+/* Sembunyikan tombol arah di perangkat touchscreen */
+@media (hover: none) and (pointer: coarse) {
+  #controls {
+    display: none;
+  }
+}
+
 
 /* =============== TOMBOL NAVIGASI =============== */
 #gameActions {
