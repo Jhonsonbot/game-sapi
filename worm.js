@@ -216,3 +216,11 @@ window.addEventListener('resize', () => {
   resizeCanvas();
   draw();
 });
+
+// Deteksi orientasi di perangkat mobile
+window.addEventListener("orientationchange", () => {
+  setTimeout(() => {
+    resizeCanvas();
+    draw();
+  }, 300);
+});
