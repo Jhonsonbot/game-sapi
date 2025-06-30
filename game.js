@@ -3,8 +3,11 @@ import {
   getAuth,
   GoogleAuthProvider,
   signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
   onAuthStateChanged,
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+
 import {
   getFirestore,
   doc,
@@ -46,11 +49,6 @@ audioBGM.loop = true;  // agar diputar terus-menerus
 const urlParams = new URLSearchParams(window.location.search);
 const referralId = urlParams.get("ref");
 
-import {
-  signInWithPopup,
-  signInWithRedirect,
-  getRedirectResult
-} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
 function signInWithGoogle() {
   const isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
