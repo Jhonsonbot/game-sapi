@@ -135,3 +135,25 @@ h2 {
 #gameActions button:hover {
   background-color: #1565C0;
 }
+
+#toggleControlsBtn {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 101;
+  font-size: 14px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 10px;
+  cursor: pointer;
+  display: none; /* default disembunyikan, hanya tampil di touchscreen */
+}
+
+/* Tampilkan tombol toggle hanya untuk touchscreen */
+@media (hover: none) and (pointer: coarse) {
+  #toggleControlsBtn {
+    display: block;
+  }
+}
