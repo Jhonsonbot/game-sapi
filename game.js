@@ -2,18 +2,22 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebas
 import {
   getAuth,
   GoogleAuthProvider,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
   signInWithPopup,
-  signInWithRedirect,
-  getRedirectResult,
   onAuthStateChanged,
+  signOut,
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-
 import {
   getFirestore,
   doc,
-  getDoc,
   setDoc,
+  getDoc,
+  updateDoc,
+  increment,
+  Timestamp,
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyB8cKqCn3V9-0K54eY4xVwfoTf9yfVwURQ",
