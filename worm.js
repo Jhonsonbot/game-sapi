@@ -90,10 +90,27 @@ function draw() {
   const size = getSnakeSize();
 
   snake.forEach((part, index) => {
-    const img = index === 0 ? headImg : bodyImg;
-    const offset = (tileSize - size) / 2;
-    ctx.drawImage(img, part.x * tileSize + offset, part.y * tileSize + offset, size, size);
-  });
+  const offset = (tileSize - size) / 2;
+  const x = part.x * tileSize + offset;
+  const y = part.y * tileSize + offset;
+
+  if (index === 0) {
+    // ROTASI KEPALA
+    ctx.save();
+    ctx.translate(x + size / 2, y + size / 2);
+    let angle = 0;
+    if (dx === 1) angle = 0;
+    else if (dx === -1) angle = Math.PI;
+    else if (dy === 1) angle = Math.PI / 2;
+    else if (dy === -1) angle = -Math.PI / 2;
+    ctx.rotate(angle);
+    ctx.drawImage(headImg, -size / 2, -size / 2, size, size);
+    ctx.restore();
+  } else {
+    ctx.drawImage(bodyImg, x, y, size, size);
+  }
+});
+
 
   const scoreEl = document.getElementById("score");
   if (scoreEl) scoreEl.textContent = score;
