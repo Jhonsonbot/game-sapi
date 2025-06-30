@@ -63,6 +63,8 @@ function signInWithGoogle() {
     });
   }
 }
+window.signInWithGoogle = signInWithGoogle;
+
 document.getElementById("loginBtn")?.addEventListener("click", () => {
   console.log("🔑 Tombol login diklik");
   signInWithGoogle();
