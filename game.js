@@ -49,6 +49,7 @@ audioBGM.loop = true;  // agar diputar terus-menerus
 const urlParams = new URLSearchParams(window.location.search);
 const referralId = urlParams.get("ref");
 
+console.log("📲 Deteksi perangkat:", navigator.userAgent);
 
 function signInWithGoogle() {
   const isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
@@ -63,6 +64,17 @@ function signInWithGoogle() {
   }
 }
 
+getRedirectResult(auth)
+  .then((result) => {
+    if (result && result.user) {
+      console.log("✅ Login berhasil via redirect:", result.user.displayName);
+      // Tidak perlu apa-apa, karena onAuthStateChanged akan jalan
+    }
+  })
+  .catch((error) => {
+    console.error("❌ Redirect login error:", error.message);
+    alert("Login gagal (redirect): " + error.message);
+  });
 
 onAuthStateChanged(auth, async (user) => {
   const loginBtn = document.getElementById("loginBtn"); // Ganti querySelector onclick
@@ -128,18 +140,6 @@ onAuthStateChanged(auth, async (user) => {
     if (loginSection) loginSection.style.display = "flex";
   }
 });
-
-getRedirectResult(auth)
-  .then((result) => {
-    if (result && result.user) {
-      console.log("✅ Login berhasil via redirect:", result.user.displayName);
-      // Tidak perlu apa-apa, karena onAuthStateChanged akan jalan
-    }
-  })
-  .catch((error) => {
-    console.error("❌ Redirect login error:", error.message);
-    alert("Login gagal (redirect): " + error.message);
-  });
 
 function renderUI() {
   cowCountEl.textContent = userData.cows.length;
