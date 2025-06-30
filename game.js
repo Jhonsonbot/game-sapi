@@ -46,19 +46,35 @@ audioBGM.loop = true;  // agar diputar terus-menerus
 const urlParams = new URLSearchParams(window.location.search);
 const referralId = urlParams.get("ref");
 
+import {
+  signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult
+} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+
 function signInWithGoogle() {
-  signInWithPopup(auth, provider).catch((error) => {
-    alert("❌ Login gagal: " + error.message);
-  });
+  const isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
+  if (isMobile) {
+    // Redirect login untuk HP
+    signInWithRedirect(auth, provider);
+  } else {
+    // Popup login untuk Desktop
+    signInWithPopup(auth, provider).catch((error) => {
+      alert("❌ Login gagal: " + error.message);
+    });
+  }
 }
 
+
 onAuthStateChanged(auth, async (user) => {
-  const loginBtn = document.querySelector("button[onclick='signInWithGoogle()']");
+  const loginBtn = document.getElementById("loginBtn"); // Ganti querySelector onclick
 
   if (user) {
     if (loginBtn) loginBtn.style.display = "none";
+
     const gameArea = document.getElementById("gameArea");
     if (gameArea) gameArea.style.display = "block";
+
     const referralSection = document.getElementById("referralSection");
     if (referralSection) referralSection.style.display = "block";
 
@@ -72,11 +88,9 @@ onAuthStateChanged(auth, async (user) => {
       userData.milk = Number.isFinite(data.milk) ? data.milk : 0;
       userData.points = Number.isFinite(data.points) ? data.points : 0;
 
-      // Sinkronisasi jumlah cows sesuai jumlah cow di map
       const expected = userData.map.filter(t => t === "cow").length;
       while (userData.cows.length < expected) userData.cows.push(1);
     } else {
-      // Buat data awal untuk user baru
       userData.map[0] = "cow";
       userData.cows = [1];
       userData.milk = 0;
@@ -84,14 +98,12 @@ onAuthStateChanged(auth, async (user) => {
 
       const newUserData = { ...userData };
 
-      // Simpan ID referral jika ada dan bukan diri sendiri
       if (referralId && referralId !== user.uid) {
         newUserData.referrer = referralId;
       }
 
       await setDoc(ref, newUserData);
 
-      // Bonus ke referrer (sekali saja)
       if (referralId && referralId !== user.uid) {
         const referrerRef = doc(db, "users", referralId);
         const refSnap = await getDoc(referrerRef);
@@ -115,6 +127,7 @@ onAuthStateChanged(auth, async (user) => {
     if (loginBtn) loginBtn.style.display = "inline-block";
   }
 });
+
 
 function renderUI() {
   cowCountEl.textContent = userData.cows.length;
