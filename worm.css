@@ -12,10 +12,13 @@ html, body {
 h2 {
   margin: 10px 0;
   color: #2d572c;
+  text-align: center;
 }
 
-/* Container utama */
-#gameContainer {
+/* ================== GAME CONTAINER MODES ================== */
+
+/* Mode fullscreen (default) */
+#gameContainer.fullscreen {
   position: absolute;
   top: 0;
   left: 0;
@@ -32,7 +35,24 @@ h2 {
   justify-content: start;
 }
 
-/* Canvas game */
+/* Mode ukuran sedang */
+#gameContainer.medium {
+  width: 640px;
+  height: 640px;
+  margin: 20px auto;
+  background-color: #fefefe;
+  border: 3px solid #4CAF50;
+  border-radius: 15px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  padding: 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+}
+
+/* ================== GAME CANVAS ================== */
 #gameCanvas {
   flex-grow: 1;
   width: 100%;
@@ -43,13 +63,11 @@ h2 {
   outline: none;
 }
 
-/* Panel kontrol (tombol) */
+/* ================== CONTROLS ================== */
 #controls {
-  position: absolute;
-  bottom: 60px;
-  left: 50%;
-  transform: translateX(-50%);
+  margin: 10px 0;
   z-index: 10;
+  text-align: center;
 }
 
 #controls button {
@@ -68,20 +86,18 @@ h2 {
   background-color: #388e3c;
 }
 
-/* Skor tampil di atas */
+/* ================== SCORE PANEL ================== */
 #scorePanel {
-  position: absolute;
-  top: 10px;
-  right: 20px;
   font-size: 20px;
   color: #333;
   background-color: rgba(255, 255, 255, 0.8);
   padding: 6px 12px;
   border-radius: 8px;
   z-index: 10;
+  margin-top: 10px;
 }
 
-/* Tombol tambahan global */
+/* ================== GLOBAL BUTTON STYLE ================== */
 button {
   font-size: 16px;
   background-color: #1976D2;
