@@ -1,4 +1,4 @@
-import { auth, db } from './game.js';
+import { auth, db } from './firebase.js';
 import {
   doc,
   getDoc,
@@ -21,13 +21,11 @@ let speed = 150;
 let grow = 0;
 let gameInterval;
 
-// Gambar
 const headImg = new Image();
 headImg.src = "./assets/snake_green_head_32.png";
 const bodyImg = new Image();
 bodyImg.src = "./assets/snake_green_blob_32.png";
 
-// Kumpulan gambar makanan
 const foodImages = [
   "./assets/apple_red_32.png",
   "./assets/apple_green_32.png",
@@ -43,15 +41,12 @@ function spawnFood(x = null, y = null) {
     y: y ?? Math.floor(Math.random() * tileCount),
     img: new Image()
   };
-  const imgPath = foodImages[Math.floor(Math.random() * foodImages.length)];
-  pos.img.src = imgPath;
+  pos.img.src = foodImages[Math.floor(Math.random() * foodImages.length)];
   foods.push(pos);
 }
 
-// Spawn makanan awal
 for (let i = 0; i < 10; i++) spawnFood();
 
-// Tambahkan makanan tiap 2 detik
 setInterval(() => {
   if (foods.length < 40) spawnFood();
 }, 2000);
@@ -60,22 +55,16 @@ function draw() {
   ctx.fillStyle = "#fff7e6";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // Gambar makanan
   foods.forEach(food => {
     ctx.drawImage(food.img, food.x * tileSize, food.y * tileSize, tileSize, tileSize);
   });
 
-  // Gambar cacing
   snake.forEach((part, index) => {
-    if (index === 0) {
-      ctx.drawImage(headImg, part.x * tileSize, part.y * tileSize, tileSize, tileSize);
-    } else {
-      ctx.drawImage(bodyImg, part.x * tileSize, part.y * tileSize, tileSize, tileSize);
-    }
+    ctx.drawImage(index === 0 ? headImg : bodyImg, part.x * tileSize, part.y * tileSize, tileSize, tileSize);
   });
 
-  // Skor
-  document.getElementById("score").textContent = score;
+  const scoreEl = document.getElementById("score");
+  if (scoreEl) scoreEl.textContent = score;
 }
 
 function update() {
@@ -83,22 +72,17 @@ function update() {
   dy = nextDy;
   const head = { x: (snake[0].x + dx + tileCount) % tileCount, y: (snake[0].y + dy + tileCount) % tileCount };
 
-  // Tabrakan badan
   if (snake.some(p => p.x === head.x && p.y === head.y)) {
-    // tubuh jadi makanan
     snake.forEach(part => spawnFood(part.x, part.y));
-    
     clearInterval(gameInterval);
-tambahPoinKeFirestore(score).then(() => {
-  alert("💀 Game Over! Skor: " + score);
-});
-return;
-
+    tambahPoinKeFirestore(score).then(() => {
+      alert("💀 Game Over! Skor: " + score);
+    });
+    return;
   }
 
   snake.unshift(head);
 
-  // Makan makanan
   let ate = false;
   foods = foods.filter(food => {
     if (food.x === head.x && food.y === head.y) {
@@ -126,6 +110,20 @@ function setDirection(x, y) {
   }
 }
 
+function restartGame() {
+  score = 0;
+  snake = [{ x: 10, y: 10 }];
+  dx = 1;
+  dy = 0;
+  nextDx = dx;
+  nextDy = dy;
+  foods = [];
+  for (let i = 0; i < 10; i++) spawnFood();
+  clearInterval(gameInterval);
+  gameInterval = setInterval(update, speed);
+  draw();
+}
+
 document.addEventListener("keydown", (e) => {
   switch (e.key) {
     case "ArrowUp": setDirection(0, -1); break;
@@ -135,8 +133,7 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
-// Touch screen support
-window.setDirection = setDirection;
+// Touch support
 let touchStartX = 0, touchStartY = 0;
 canvas.addEventListener("touchstart", e => {
   touchStartX = e.touches[0].clientX;
@@ -154,13 +151,19 @@ canvas.addEventListener("touchend", e => {
   }
 });
 
-// Mulai game
+// Buat fungsi global agar bisa dipanggil dari tombol HTML
+window.setDirection = setDirection;
+window.restartGame = restartGame;
+
 draw();
 gameInterval = setInterval(update, speed);
 
 async function tambahPoinKeFirestore(skor) {
   const user = auth.currentUser;
-  if (!user) return console.warn("User belum login!");
+  if (!user) {
+    console.warn("User belum login. Poin tidak disimpan.");
+    return;
+  }
 
   const ref = doc(db, "users", user.uid);
   const snap = await getDoc(ref);
@@ -172,4 +175,3 @@ async function tambahPoinKeFirestore(skor) {
 
   console.log(`✅ Poin ditambahkan: ${skor}, total baru: ${current + skor}`);
 }
-
