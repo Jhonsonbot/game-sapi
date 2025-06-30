@@ -89,8 +89,14 @@ getRedirectResult(auth)
   .then((result) => {
     if (result && result.user) {
       console.log("✅ Login berhasil via redirect:", result.user.displayName);
+
+      // ⬇️ Tambahkan ini agar di HP pindah ke gameArea setelah redirect
+      setTimeout(() => {
+        window.location.reload();
+      }, 300);
     }
   })
+
   .catch((error) => {
     console.error("❌ Redirect login error:", error.message);
     alert("Login gagal (redirect): " + error.message);
