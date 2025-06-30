@@ -9,12 +9,24 @@ const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
 const tileSize = 32;
-const tileCount = 20;
-canvas.width = tileSize * tileCount;
-canvas.height = tileSize * tileCount;
+let tileCountX = 20;
+let tileCountY = 20;
+
+function resizeCanvas() {
+  tileCountX = Math.floor(window.innerWidth / tileSize);
+  tileCountY = Math.floor(window.innerHeight / tileSize);
+  canvas.width = tileCountX * tileSize;
+  canvas.height = tileCountY * tileSize;
+}
+
+resizeCanvas();
+window.addEventListener('resize', () => {
+  resizeCanvas();
+  draw();
+});
 
 let score = 0;
-let snake = [{ x: 10, y: 10 }];
+let snake = [{ x: Math.floor(tileCountX / 2), y: Math.floor(tileCountY / 2) }];
 let dx = 1, dy = 0;
 let nextDx = dx, nextDy = dy;
 let speed = 150;
@@ -37,8 +49,8 @@ let foods = [];
 
 function spawnFood(x = null, y = null) {
   const pos = {
-    x: x ?? Math.floor(Math.random() * tileCount),
-    y: y ?? Math.floor(Math.random() * tileCount),
+    x: x ?? Math.floor(Math.random() * tileCountX),
+    y: y ?? Math.floor(Math.random() * tileCountY),
     img: new Image()
   };
   pos.img.src = foodImages[Math.floor(Math.random() * foodImages.length)];
@@ -70,7 +82,10 @@ function draw() {
 function update() {
   dx = nextDx;
   dy = nextDy;
-  const head = { x: (snake[0].x + dx + tileCount) % tileCount, y: (snake[0].y + dy + tileCount) % tileCount };
+  const head = {
+    x: (snake[0].x + dx + tileCountX) % tileCountX,
+    y: (snake[0].y + dy + tileCountY) % tileCountY
+  };
 
   if (snake.some(p => p.x === head.x && p.y === head.y)) {
     snake.forEach(part => spawnFood(part.x, part.y));
@@ -112,7 +127,7 @@ function setDirection(x, y) {
 
 function restartGame() {
   score = 0;
-  snake = [{ x: 10, y: 10 }];
+  snake = [{ x: Math.floor(tileCountX / 2), y: Math.floor(tileCountY / 2) }];
   dx = 1;
   dy = 0;
   nextDx = dx;
@@ -151,7 +166,6 @@ canvas.addEventListener("touchend", e => {
   }
 });
 
-// Buat fungsi global agar bisa dipanggil dari tombol HTML
 window.setDirection = setDirection;
 window.restartGame = restartGame;
 
