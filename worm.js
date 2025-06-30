@@ -35,7 +35,6 @@ const foodImages = [
 
 let foods = [];
 
-// ======================= RESIZE & MODE =======================
 function resizeCanvas() {
   if (container.classList.contains("fullscreen")) {
     tileCountX = Math.floor(window.innerWidth / tileSize);
@@ -54,11 +53,10 @@ function toggleFullscreen() {
   container.classList.toggle("fullscreen", isFullscreen);
   container.classList.toggle("medium", !isFullscreen);
   resizeCanvas();
-  restartGame(); // restart agar posisi ulang tengah
+  restartGame();
 }
 window.toggleFullscreen = toggleFullscreen;
 
-// ======================= GAME =======================
 function spawnFood(x = null, y = null) {
   const pos = {
     x: x ?? Math.floor(Math.random() * tileCountX),
@@ -75,6 +73,12 @@ setInterval(() => {
   if (foods.length < 40) spawnFood();
 }, 2000);
 
+function getSnakeSize() {
+  const base = 32;
+  const max = 64;
+  return Math.min(base + Math.floor(snake.length / 5), max);
+}
+
 function draw() {
   ctx.fillStyle = "#fff7e6";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -83,8 +87,12 @@ function draw() {
     ctx.drawImage(food.img, food.x * tileSize, food.y * tileSize, tileSize, tileSize);
   });
 
+  const size = getSnakeSize();
+
   snake.forEach((part, index) => {
-    ctx.drawImage(index === 0 ? headImg : bodyImg, part.x * tileSize, part.y * tileSize, tileSize, tileSize);
+    const img = index === 0 ? headImg : bodyImg;
+    const offset = (tileSize - size) / 2;
+    ctx.drawImage(img, part.x * tileSize + offset, part.y * tileSize + offset, size, size);
   });
 
   const scoreEl = document.getElementById("score");
@@ -100,10 +108,17 @@ function update() {
   };
 
   if (snake.some(p => p.x === head.x && p.y === head.y)) {
-    snake.forEach(part => spawnFood(part.x, part.y));
     clearInterval(gameInterval);
+    snake.forEach((part, i) => {
+      setTimeout(() => {
+        spawnFood(part.x, part.y);
+        draw();
+      }, i * 50);
+    });
     tambahPoinKeFirestore(score).then(() => {
-      alert("💀 Game Over! Skor: " + score);
+      setTimeout(() => {
+        alert("💀 Game Over! Skor: " + score);
+      }, snake.length * 50 + 200);
     });
     return;
   }
@@ -152,7 +167,6 @@ function restartGame() {
 }
 window.restartGame = restartGame;
 
-// ======================= INPUT =======================
 document.addEventListener("keydown", (e) => {
   switch (e.key) {
     case "ArrowUp": setDirection(0, -1); break;
@@ -162,7 +176,6 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
-// Touch support
 let touchStartX = 0, touchStartY = 0;
 canvas.addEventListener("touchstart", e => {
   touchStartX = e.touches[0].clientX;
@@ -180,7 +193,6 @@ canvas.addEventListener("touchend", e => {
   }
 });
 
-// ======================= TOGGLE CONTROLS =======================
 window.toggleControls = function () {
   const controls = document.getElementById("controls");
   const toggleBtn = document.getElementById("toggleControlsBtn");
@@ -191,7 +203,6 @@ window.toggleControls = function () {
   toggleBtn.textContent = isHidden ? "❌ Hide Controls" : "🎮 Show Controls";
 };
 
-// ======================= FIRESTORE =======================
 async function tambahPoinKeFirestore(skor) {
   const user = auth.currentUser;
   if (!user) {
@@ -210,7 +221,6 @@ async function tambahPoinKeFirestore(skor) {
   console.log(`✅ Poin ditambahkan: ${skor}, total baru: ${current + skor}`);
 }
 
-// ======================= INISIALISASI =======================
 resizeCanvas();
 restartGame();
 
@@ -226,7 +236,6 @@ window.addEventListener("orientationchange", () => {
   }, 300);
 });
 
-// Deteksi perangkat touchscreen dan tampilkan toggleControlsBtn jika perlu
 window.addEventListener("DOMContentLoaded", () => {
   const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
   const controls = document.getElementById("controls");
