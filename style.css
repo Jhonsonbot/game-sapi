@@ -202,3 +202,26 @@ button:hover {
   transform: scale(1.1);
   background-color: #5a3e24;
 }
+
+#loginSection {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Tinggi penuh layar */
+  position: relative;
+  z-index: 100;
+}
+
+#loginSection button {
+  font-size: 20px;
+  padding: 14px 28px;
+  background-color: #007bff;
+  border: none;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+#loginSection button:hover {
+  background-color: #0056b3;
+}
