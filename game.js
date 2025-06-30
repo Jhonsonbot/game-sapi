@@ -51,15 +51,16 @@ const referralId = urlParams.get("ref");
 
 console.log("📲 Deteksi perangkat:", navigator.userAgent);
 
-import { browserLocalPersistence, setPersistence } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-
 function signInWithGoogle() {
   const isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
+
   if (isMobile) {
-    // Redirect login untuk HP
-    signInWithRedirect(auth, provider);
+    try {
+      signInWithRedirect(auth, provider);
+    } catch (err) {
+      alert("Redirect gagal: " + err.message);
+    }
   } else {
-    // Popup login untuk Desktop
     signInWithPopup(auth, provider).catch((error) => {
       alert("❌ Login gagal: " + error.message);
     });
@@ -72,22 +73,19 @@ document.getElementById("loginBtn")?.addEventListener("click", () => {
   signInWithGoogle();
 });
 
+onAuthStateChanged(auth, async (user) => {
+  const loginBtn = document.getElementById("loginBtn");
+  const loginSection = document.getElementById("loginSection");
 
-getRedirectResult(auth)
-  .then((result) => {
+  try {
+    const result = await getRedirectResult(auth);
     if (result && result.user) {
       console.log("✅ Login berhasil via redirect:", result.user.displayName);
-      // Tidak perlu apa-apa, karena onAuthStateChanged akan jalan
     }
-  })
-  .catch((error) => {
+  } catch (error) {
     console.error("❌ Redirect login error:", error.message);
     alert("Login gagal (redirect): " + error.message);
-  });
-
-onAuthStateChanged(auth, async (user) => {
-  const loginBtn = document.getElementById("loginBtn"); // Ganti querySelector onclick
-  const loginSection = document.getElementById("loginSection");
+  }
 
   if (user) {
     if (loginBtn) loginBtn.style.display = "none";
@@ -118,7 +116,6 @@ onAuthStateChanged(auth, async (user) => {
       userData.points = 0;
 
       const newUserData = { ...userData };
-
       if (referralId && referralId !== user.uid) {
         newUserData.referrer = referralId;
       }
@@ -131,7 +128,6 @@ onAuthStateChanged(auth, async (user) => {
         if (refSnap.exists()) {
           const refData = refSnap.data();
           const bonus = 5000;
-
           await setDoc(referrerRef, {
             ...refData,
             points: (refData.points || 0) + bonus
@@ -149,6 +145,7 @@ onAuthStateChanged(auth, async (user) => {
     if (loginSection) loginSection.style.display = "flex";
   }
 });
+
 
 function renderUI() {
   cowCountEl.textContent = userData.cows.length;
