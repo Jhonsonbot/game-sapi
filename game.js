@@ -129,6 +129,17 @@ onAuthStateChanged(auth, async (user) => {
   }
 });
 
+getRedirectResult(auth)
+  .then((result) => {
+    if (result && result.user) {
+      console.log("✅ Login berhasil via redirect:", result.user.displayName);
+      // Tidak perlu apa-apa, karena onAuthStateChanged akan jalan
+    }
+  })
+  .catch((error) => {
+    console.error("❌ Redirect login error:", error.message);
+    alert("Login gagal (redirect): " + error.message);
+  });
 
 function renderUI() {
   cowCountEl.textContent = userData.cows.length;
