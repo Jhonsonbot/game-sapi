@@ -21,10 +21,20 @@ let speed = 150;
 let grow = 0;
 let gameInterval;
 
+// === GANTI BAGIAN INI DI AWAL ===
 const headImg = new Image();
-headImg.src = "./assets/snake_green_head_32.png";
-const bodyImg = new Image();
-bodyImg.src = "./assets/snake_green_blob_32.png";
+headImg.src = "./assets/kepala.png";
+
+const bodyImgs = [
+  new Image(),
+  new Image()
+];
+bodyImgs[0].src = "./assets/badan1.png";
+bodyImgs[1].src = "./assets/badan2.png";
+
+const tailImg = new Image();
+tailImg.src = "./assets/ekor.png";
+
 
 const foodImages = [
   "./assets/apple_red_32.png",
@@ -90,14 +100,24 @@ function draw() {
   const size = getSnakeSize();
 
   snake.forEach((part, index) => {
-    const img = index === 0 ? headImg : bodyImg;
     const offset = (tileSize - size) / 2;
+    let img;
+
+    if (index === 0) {
+      img = headImg;
+    } else if (index === snake.length - 1) {
+      img = tailImg;
+    } else {
+      img = bodyImgs[index % bodyImgs.length];
+    }
+
     ctx.drawImage(img, part.x * tileSize + offset, part.y * tileSize + offset, size, size);
   });
 
   const scoreEl = document.getElementById("score");
   if (scoreEl) scoreEl.textContent = score;
 }
+
 
 function update() {
   dx = nextDx;
