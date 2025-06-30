@@ -63,6 +63,7 @@ function signInWithGoogle() {
     });
   }
 }
+document.getElementById("loginBtn")?.addEventListener("click", signInWithGoogle);
 
 getRedirectResult(auth)
   .then((result) => {
