@@ -3,43 +3,127 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Game Cacing</title>
+  <title>Worm Clash</title>
   <link rel="stylesheet" href="worm.css" />
-</head>
-<body>
-  <h2>🐍 Game Cacing</h2>
 
-  <div id="gameContainer" class="fullscreen">
+  <!-- 🔊 Sound Assets -->
+  <audio id="eatSound" src="assets/eat.wav" preload="auto"></audio>
+  <audio id="deathSound" src="assets/death.wav" preload="auto"></audio>
+  <audio id="boostSound" src="assets/bossBoost.wav" preload="auto"></audio>
+  <audio id="bubbleSound" src="assets/bubble.wav" preload="auto"></audio>
+</head>
+
+<body>
+  <div class="game-wrapper">
+
+    <!-- 🏁 Main Menu -->
+    <div id="menu" class="overlay">
+      <h1 class="title">Worm Clash</h1>
+      <p class="desc">Control your snake with your mouse and eat the colorful pellets to grow!</p>
+
+      <input type="text" id="usernameInput" placeholder="Enter your username" maxlength="16" />
+      <select id="patternSelect" style="margin-bottom: 1rem; padding: 0.5rem; border-radius: 6px;">
+        <option value="default">🐍 Default</option>
+        <option value="random">🎨 Random</option>
+        <option value="classic">🌿 Classic</option>
+      </select>
+
+      <button id="submitUsernameBtn">Submit</button>
+
+      <ul class="tips">
+        <li>🎯 Collect food to grow longer</li>
+        <li>🐍 Avoid hitting other snakes</li>
+        <li>🏆 Reach the leaderboard!</li>
+      </ul>
+
+      <button id="startBtn" style="display: none;">Start Game</button>
+    </div>
+
+    <!-- 🎮 Game Canvas -->
     <canvas id="gameCanvas"></canvas>
 
-    <!-- Skor -->
-    <div id="scorePanel">Skor: <span id="score">0</span></div>
+    <!-- 🧾 HUD -->
+    <div id="hud" class="hud" style="display: none;">
+      <button id="backToLobbyBtn">🏡 Menu</button>
+      <div class="stat">🏆 <span id="score">0</span></div>
+      <div class="stat">🐍 Length: <span id="length">1</span></div>
 
-    <!-- Tombol kecil untuk toggle kontrol -->
-    <button id="toggleControlsBtn" onclick="toggleControls()">🎮</button>
-
-    <!-- Tombol arah -->
-    <div id="controls">
-      <div class="arrow-row">
-        <button onclick="setDirection(0, -1)">⬆️</button>
-      </div>
-      <div class="arrow-row">
-        <button onclick="setDirection(-1, 0)">⬅️</button>
-        <button onclick="setDirection(1, 0)">➡️</button>
-      </div>
-      <div class="arrow-row">
-        <button onclick="setDirection(0, 1)">⬇️</button>
+      <!-- 🔧 Lobby Menu (muncul setelah klik Menu) -->
+      <div id="lobbyMenu" style="display: none; margin-top: 1rem;">
+        <button id="leaderboardBtn">🏆 Top Scores</button>
+        <button id="submitEmailBtn">📧 Submit Email</button>
+        <button id="resumeBtn">▶️ Lanjut Main</button>
+        <button id="restartBtnLobby">🔁 Restart Game</button>
       </div>
     </div>
 
-    <!-- Aksi utama -->
-    <div id="gameActions">
-      <button onclick="restartGame()">🔄 Mulai Ulang</button>
-      <button onclick="toggleFullscreen()">🖥️ Ukuran Layar</button>
-      <button onclick="window.location.href='index.html'">🏡 Kembali</button>
-    </div>
+    <!-- ☠️ Game Over -->
+<div id="gameOver" class="overlay" style="display: none;">
+  <h2 class="gameover-title">Game Over!</h2>
+  <p class="final-score">Score: <span id="finalScore">0</span></p>
+  <p class="final-length">Length: <span id="finalLength">0</span></p>
+
+  <div class="btn-group">
+    <button id="restartBtn">Play Again</button>
+    <button id="menuBtn">Main Menu</button>
   </div>
+</div>
 
+<!-- 🏆 Leaderboard -->
+<div id="leaderboard" class="overlay" style="display: none;">
+  <h2>🏆 Top 10 Leaderboard</h2>
+  <ul id="leaderboardList"></ul>
+  <button onclick="document.getElementById('leaderboard').style.display='none'">❌ Close</button>
+</div>
+    
+</div>
+  <!-- 📜 Main Game Script -->
   <script type="module" src="worm.js"></script>
+
+  <!-- 💡 Lobby Menu Script -->
+<script>
+  const backToLobbyBtn = document.getElementById("backToLobbyBtn");
+  const lobbyMenu = document.getElementById("lobbyMenu");
+  const leaderboardEl = document.getElementById("leaderboard");
+
+  backToLobbyBtn.addEventListener("click", () => {
+    lobbyMenu.style.display = (lobbyMenu.style.display === "none" || lobbyMenu.style.display === "") 
+      ? "block" 
+      : "none";
+  });
+
+  document.getElementById("resumeBtn").addEventListener("click", () => {
+    lobbyMenu.style.display = "none";
+    if (typeof resumeGame === "function") resumeGame();
+  });
+
+  document.getElementById("restartBtnLobby").addEventListener("click", () => {
+    if (typeof restartGame === "function") {
+      restartGame();
+    } else {
+      location.reload();
+    }
+  });
+
+  document.getElementById("leaderboardBtn").addEventListener("click", () => {
+    leaderboardEl.style.display = 'block';
+    if (typeof showLeaderboard === "function") showLeaderboard();
+  });
+
+  document.getElementById("menuBtn").addEventListener("click", () => {
+    document.getElementById("gameOver").style.display = "none";
+    document.getElementById("hud").style.display = "none";
+    document.getElementById("menu").style.display = "flex";
+  });
+
+  document.getElementById("restartBtn").addEventListener("click", () => {
+    if (typeof restartGame === "function") {
+      restartGame();
+    } else {
+      location.reload();
+    }
+  });
+</script>
+
 </body>
 </html>
