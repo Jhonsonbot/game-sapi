@@ -458,7 +458,6 @@ function showReferralLink() {
 }
 
  document.querySelector('.game-button')?.addEventListener('click', () => {
-    window.location.href = 'worm.html';
-  });
-
+  window.location.href = '/worm';
+});
 export { auth, db };
