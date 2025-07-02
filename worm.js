@@ -1,15 +1,11 @@
 import { auth, db } from './firebase.js';
 import {
+  getFirestore,
   doc,
-  setDoc,
   getDoc,
-  updateDoc,
-  collection,
-  getDocs,
-  query,
-  orderBy,
-  limit
+  setDoc,
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
 
 const submitUsernameBtn = document.getElementById('submitUsernameBtn');
 const startBtn = document.getElementById('startBtn');
