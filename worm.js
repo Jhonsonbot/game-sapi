@@ -1,6 +1,7 @@
 import { auth, db } from './firebase.js';
 import {
   getFirestore,
+  query, 
   doc,
   getDoc,
   setDoc,
@@ -785,8 +786,6 @@ function enhanceColor(color, factor = 1.4) {
 
   return color;
 }
-
-
 
 canvas.addEventListener('touchmove', e => {
   e.preventDefault();
